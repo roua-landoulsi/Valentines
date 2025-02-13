@@ -21,6 +21,7 @@
       justify-content: center;
     }
 
+    /* Start Screen */
     #startScreen {
       text-align: center;
       background: rgba(255, 182, 193, 0.95);
@@ -51,10 +52,21 @@
       background-color: #cc0000;
       transform: scale(1.1);
     }
+
+    /* Spider-Man Character */
+    #spiderman {
+      position: absolute;
+      width: 100px;
+      height: 120px;
+      background: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f5f62778-b66b-44e7-87ab-a4d6c8280c15/dhud8kq-977c7c52-a4ab-4f8a-ae95-69a93944ac59.png') no-repeat center/contain;
+      background-size: cover;
+      display: none; /* Hide before game starts */
+    }
   </style>
 </head>
 <body>
 
+  <!-- Start Screen -->
   <div id="gameContainer">
     <div id="startScreen">
       <h1>💖 Happy Valentine's Mahdi !!💖</h1>
@@ -63,103 +75,48 @@
     </div>
   </div>
 
+  <!-- Spider-Man -->
+  <div id="spiderman"></div>
+
   <script>
     function startGame() {
       // Hide start screen
       document.getElementById('startScreen').style.display = 'none';
 
-      // Placeholder alert (Next: Add Spider-Man character and controls)
-      alert('🕷️ Game starting! Next up: Spider-Man arrives!');
+      // Show Spider-Man and start controls
+      let spiderman = document.getElementById('spiderman');
+      spiderman.style.display = 'block';
+
+      // Place Spider-Man at starting position
+      let x = 100;
+      let y = 300;
+      let speed = 15;
+
+      spiderman.style.left = x + 'px';
+      spiderman.style.top = y + 'px';
+
+      // Handle keyboard input for movement
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'ArrowRight') {
+          x += speed; // Move right
+        } else if (event.key === 'ArrowLeft') {
+          x -= speed; // Move left
+        } else if (event.key === 'ArrowUp') {
+          y -= speed; // Jump up
+        } else if (event.key === 'ArrowDown') {
+          y += speed; // Move down
+        }
+
+        // Keep Spider-Man inside screen bounds
+        x = Math.max(0, Math.min(window.innerWidth - 100, x));
+        y = Math.max(0, Math.min(window.innerHeight - 120, y));
+
+        // Update Spider-Man position
+        spiderman.style.left = x + 'px';
+        spiderman.style.top = y + 'px';
+      });
     }
   </script>
-<style>
-  #spiderman {
-    position: absolute;
-    width: 100px;
-    height: 120px;
-    background: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f5f62778-b66b-44e7-87ab-a4d6c8280c15/dhud8kq-977c7c52-a4ab-4f8a-ae95-69a93944ac59.png') no-repeat center/contain;
-    background-size: cover;
-  }
-</style>
-
-<div id="spiderman"></div>
-
-<script>
-  // Spider-Man position
-  let spiderman = document.getElementById('spiderman');
-  let x = 100;
-  let y = 300;
-  let speed = 15;
-
-  // Place Spider-Man at starting position
-  spiderman.style.left = x + 'px';
-  spiderman.style.top = y + 'px';
-
-  // Handle keyboard input
-  document.addEventListener('keydown', function(event) {
-    if (event.key === 'ArrowRight') {
-      x += speed; // Move right
-    } else if (event.key === 'ArrowLeft') {
-      x -= speed; // Move left
-    } else if (event.key === 'ArrowUp') {
-      y -= speed; // Jump up
-    } else if (event.key === 'ArrowDown') {
-      y += speed; // Move down
-    }
-    
-    // Keep Spider-Man inside screen bounds
-    x = Math.max(0, Math.min(window.innerWidth - 100, x));
-    y = Math.max(0, Math.min(window.innerHeight - 120, y));
-
-    // Update position
-    spiderman.style.left = x + 'px';
-    spiderman.style.top = y + 'px';
-  });
-</script>
-<style>
-  #spiderman {
-    position: absolute;
-    width: 100px;
-    height: 120px;
-    background: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f5f62778-b66b-44e7-87ab-a4d6c8280c15/dhud8kq-977c7c52-a4ab-4f8a-ae95-69a93944ac59.png') no-repeat center/contain;
-    background-size: cover;
-  }
-</style>
-
-<div id="spiderman"></div>
-
-<script>
-  // Spider-Man position
-  let spiderman = document.getElementById('spiderman');
-  let x = 100;
-  let y = 300;
-  let speed = 15;
-
-  // Place Spider-Man at starting position
-  spiderman.style.left = x + 'px';
-  spiderman.style.top = y + 'px';
-
-  // Handle keyboard input
-  document.addEventListener('keydown', function(event) {
-    if (event.key === 'ArrowRight') {
-      x += speed; // Move right
-    } else if (event.key === 'ArrowLeft') {
-      x -= speed; // Move left
-    } else if (event.key === 'ArrowUp') {
-      y -= speed; // Jump up
-    } else if (event.key === 'ArrowDown') {
-      y += speed; // Move down
-    }
-
-    // Keep Spider-Man inside screen bounds
-    x = Math.max(0, Math.min(window.innerWidth - 100, x));
-    y = Math.max(0, Math.min(window.innerHeight - 120, y));
-
-    // Update position
-    spiderman.style.left = x + 'px';
-    spiderman.style.top = y + 'px';
-  });
-</script>
 
 </body>
 </html>
