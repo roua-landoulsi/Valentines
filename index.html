@@ -3,78 +3,77 @@
 <head>
   <title>Valentine's Game for Mahdi 💖</title>
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      font-family: 'Arial', sans-serif;
-      background-color: #87CEEB;
+    body { margin: 0; padding: 0; overflow: hidden; font-family: Arial, sans-serif; background-color: #87CEEB; }
+
+    #startScreen, #gameOverScreen, #winScreen {
+      position: fixed; width: 100%; height: 100%; background: rgba(255, 182, 193, 0.95);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: bold;
     }
 
-    /* Spider-Man Character */
-    #spiderman {
-      position: absolute;
-      width: 100px;
-      height: 120px;
-      background: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f5f62778-b66b-44e7-87ab-a4d6c8280c15/dhud8kq-977c7c52-a4ab-4f8a-ae95-69a93944ac59.png') no-repeat center/contain;
-      background-size: cover;
-      top: 350px;
-      left: 120px;
-      z-index: 100;
-      display: block;
-    }
+    .button { background-color: #ff4d4d; color: white; font-size: 24px; padding: 10px 30px;
+              border-radius: 10px; cursor: pointer; margin-top: 20px; }
 
-    /* Game World */
     #gameContainer {
-      position: relative;
-      width: 200vw;
-      height: 100vh;
+      position: relative; width: 400vw; height: 100vh;
       background: url('https://wallpapers.com/images/high/hello-kitty-spiderman-heart-hnkzdcepdjizhvuw.webp') no-repeat center/cover;
-      overflow-x: scroll;
-      overflow-y: hidden;
-      white-space: nowrap;
-      border-bottom: 5px solid #8B4513;
     }
 
-    #gameContainer::-webkit-scrollbar {
-      display: none;
+    .platform { position: absolute; width: 150px; height: 20px; background-color: #8B4513; border-radius: 5px; }
+    .enemy { position: absolute; width: 60px; height: 60px; background-color: red; }
+    .heart { position: absolute; width: 30px; height: 30px; background-color: pink; border-radius: 50%; }
+
+    #spiderman, #helloKitty {
+      position: absolute; width: 80px; height: 100px;
+      background-size: cover; display: none;
     }
 
-    /* Platforms */
-    .platform {
-      position: absolute;
-      width: 180px;
-      height: 20px;
-      background-color: #8B4513;
-      border-radius: 5px;
-      border: 2px solid #5C3D2E;
-      z-index: 90;
+    #spiderman { background: url('https://images-wixmp-ed30a86b8c4ca887773594c2.png') no-repeat center/contain; }
+    #helloKitty {
+      background: url('https://www.citypng.com/public/uploads/preview/sweet-hello-kitty-ballet-dancer-transparent-background-7358116966750470e7ptokdz9.png') no-repeat center/contain;
     }
-
-    /* Platform Positions */
-    .platform1 { left: 150px; bottom: 250px; }
-    .platform2 { left: 450px; bottom: 350px; }
-    .platform3 { left: 800px; bottom: 250px; }
-    .platform4 { left: 1200px; bottom: 400px; }
-    .platform5 { left: 1500px; bottom: 250px; }
   </style>
 </head>
 <body>
-
-  <!-- Game Area -->
-  <div id="gameContainer">
-    <div id="spiderman"></div>
-
-    <!-- Platforms -->
-    <div class="platform platform1"></div>
-    <div class="platform platform2"></div>
-    <div class="platform platform3"></div>
-    <div class="platform platform4"></div>
-    <div class="platform platform5"></div>
+  <div id="startScreen">
+    💖 Happy Valentine's Mahdi💖
+    <div class="button" onclick="startGame()">Start Game</div>
   </div>
 
+  <div id="gameContainer">
+    <div id="spiderman"></div>
+    <div id="helloKitty"></div>
+    <div class="platform" style="left: 200px; bottom: 250px;"></div>
+    <div class="platform" style="left: 400px; bottom: 350px;"></div>
+    <div class="platform" style="left: 600px; bottom: 250px;"></div>
+  </div>
+
+  <div id="gameOverScreen" style="display:none;">
+    Game Over 💔
+    <div class="button" onclick="retryGame()">Retry</div>
+  </div>
+
+  <div id="winScreen" style="display:none;">
+    🎉 You Found Me! 💖
+    <div class="button" onclick="restartGame()">Play Again</div>
+  </div>
+
+  <script>
+    function startGame() {
+      document.getElementById('startScreen').style.display = 'none';
+      document.getElementById('spiderman').style.display = 'block';
+    }
+
+    function gameOver() {
+      document.getElementById('gameOverScreen').style.display = 'flex';
+    }
+
+    function winGame() {
+      document.getElementById('winScreen').style.display = 'flex';
+      document.getElementById('helloKitty').style.display = 'block';
+    }
+  </script>
 </body>
 </html>
 
-   
-   
+  
