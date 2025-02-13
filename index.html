@@ -11,222 +11,70 @@
       background-color: #87CEEB;
     }
 
+    /* Spider-Man Character */
+    #spiderman {
+      position: absolute;
+      width: 100px;
+      height: 120px;
+      background: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f5f62778-b66b-44e7-87ab-a4d6c8280c15/dhud8kq-977c7c52-a4ab-4f8a-ae95-69a93944ac59.png') no-repeat center/contain;
+      background-size: cover;
+      top: 350px;
+      left: 120px;
+      z-index: 100;
+      display: block;
+    }
+
+    /* Game World */
     #gameContainer {
       position: relative;
-      width: 100vw;
+      width: 200vw;
       height: 100vh;
       background: url('https://wallpapers.com/images/high/hello-kitty-spiderman-heart-hnkzdcepdjizhvuw.webp') no-repeat center/cover;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      white-space: nowrap;
+      border-bottom: 5px solid #8B4513;
     }
 
-    #ground {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      height: 100px;
-      background-color: #228B22;
-      border-top: 10px solid #8B4513;
+    #gameContainer::-webkit-scrollbar {
+      display: none;
     }
 
+    /* Platforms */
     .platform {
       position: absolute;
-      width: 150px;
+      width: 180px;
       height: 20px;
       background-color: #8B4513;
       border-radius: 5px;
       border: 2px solid #5C3D2E;
+      z-index: 90;
     }
 
-    #spiderman {
-      position: absolute;
-      width: 80px;
-      height: 100px;
-      background: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f5f62778-b66b-44e7-87ab-a4d6c8280c15/dhud8kq-977c7c52-a4ab-4f8a-ae95-69a93944ac59.png') no-repeat center/contain;
-      background-size: cover;
-      display: none;
-    }
-
-    #startScreen {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(255, 182, 193, 0.95);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
-    }
-
-    #startButton {
-      background-color: #ff4d4d;
-      color: white;
-      font-size: 28px;
-      font-weight: bold;
-      border: none;
-      padding: 15px 40px;
-      border-radius: 15px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    #startButton:hover {
-      background-color: #cc0000;
-      transform: scale(1.1);
-    }
-
-    /* MOBILE CONTROLS */
-    #mobileControls {
-      display: none; /* Hidden on desktop */
-      position: absolute;
-      bottom: 20px;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-    }
-
-    .control-btn {
-      width: 70px;
-      height: 70px;
-      background-color: #ff4d4d;
-      color: white;
-      font-size: 20px;
-      font-weight: bold;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: 0.3s;
-      user-select: none;
-    }
-
-    .control-btn:hover {
-      background-color: #cc0000;
-      transform: scale(1.1);
-    }
-
-    @media (max-width: 768px) {
-      #mobileControls {
-        display: flex; /* Show on phones */
-      }
-    }
+    /* Platform Positions */
+    .platform1 { left: 150px; bottom: 250px; }
+    .platform2 { left: 450px; bottom: 350px; }
+    .platform3 { left: 800px; bottom: 250px; }
+    .platform4 { left: 1200px; bottom: 400px; }
+    .platform5 { left: 1500px; bottom: 250px; }
   </style>
 </head>
 <body>
-
-  <!-- Start Screen -->
-  <div id="startScreen">
-    <h1>💖 Happy Valentine's Mahdi !!💖</h1>
-    <p>Click to Start Your Adventure!</p>
-    <button id="startButton" onclick="startGame()">Start Game</button>
-  </div>
 
   <!-- Game Area -->
   <div id="gameContainer">
     <div id="spiderman"></div>
 
     <!-- Platforms -->
-    <div class="platform" style="left: 150px; bottom: 250px;"></div>
-    <div class="platform" style="left: 350px; bottom: 400px;"></div>
-    <div class="platform" style="left: 550px; bottom: 250px;"></div>
-
-    <!-- Ground -->
-    <div id="ground"></div>
+    <div class="platform platform1"></div>
+    <div class="platform platform2"></div>
+    <div class="platform platform3"></div>
+    <div class="platform platform4"></div>
+    <div class="platform platform5"></div>
   </div>
-
-  <!-- Mobile Controls -->
-  <div id="mobileControls">
-    <div class="control-btn" id="leftBtn">⬅️</div>
-    <div class="control-btn" id="jumpBtn">⬆️</div>
-    <div class="control-btn" id="rightBtn">➡️</div>
-  </div>
-
-  <script>
-    let spiderman = document.getElementById('spiderman');
-    let x = 100;
-    let y = 400;
-    let velocityY = 0;
-    let gravity = 1;
-    let jumpStrength = 20;
-    let isJumping = false;
-    let speed = 10;
-
-    function startGame() {
-      document.getElementById('startScreen').style.display = 'none';
-      spiderman.style.display = 'block';
-
-      // Position Spider-Man at the start
-      x = 100;
-      y = 400;
-      spiderman.style.left = x + 'px';
-      spiderman.style.top = y + 'px';
-
-      // Desktop Controls (Arrow Keys)
-      document.addEventListener('keydown', function(event) {
-        if (event.key === 'ArrowRight') {
-          x += speed;
-        } else if (event.key === 'ArrowLeft') {
-          x -= speed;
-        } else if (event.key === ' ' && !isJumping) {
-          velocityY = -jumpStrength;
-          isJumping = true;
-        }
-      });
-
-      // Mobile Controls
-      document.getElementById('leftBtn').addEventListener('touchstart', () => x -= speed);
-      document.getElementById('rightBtn').addEventListener('touchstart', () => x += speed);
-      document.getElementById('jumpBtn').addEventListener('touchstart', () => {
-        if (!isJumping) {
-          velocityY = -jumpStrength;
-          isJumping = true;
-        }
-      });
-
-      // Game Loop
-      setInterval(() => {
-        velocityY += gravity;
-        y += velocityY;
-
-        // Collision with ground
-        if (y > window.innerHeight - 120) {
-          y = window.innerHeight - 120;
-          velocityY = 0;
-          isJumping = false;
-        }
-
-        // Collision with platforms
-        let platforms = document.querySelectorAll('.platform');
-        platforms.forEach(platform => {
-          let px = platform.offsetLeft;
-          let py = platform.offsetTop;
-          let pw = platform.offsetWidth;
-          let ph = platform.offsetHeight;
-
-          if (
-            x < px + pw &&
-            x + 80 > px &&
-            y + 100 > py &&
-            y + 100 < py + ph &&
-            velocityY > 0
-          ) {
-            y = py - 100;
-            velocityY = 0;
-            isJumping = false;
-          }
-        });
-
-        // Keep Spider-Man inside screen bounds
-        x = Math.max(0, Math.min(window.innerWidth - 80, x));
-        y = Math.max(0, Math.min(window.innerHeight - 120, y));
-
-        // Update Spider-Man position
-        spiderman.style.left = x + 'px';
-        spiderman.style.top = y + 'px';
-      }, 20);
-    }
-  </script>
 
 </body>
 </html>
+
+   
+   
