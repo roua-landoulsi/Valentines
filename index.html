@@ -1,24 +1,28 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Mahdi's Valentine's Adventure 💖</title>
+    <title>💖 The Ultimate Valentine's Adventure 💖</title>
     <style>
       body {
         margin: 0;
-        font-family: Arial, sans-serif;
-        background: url('https://wallpapers.com/images/high/hello-kitty-spiderman-heart.jpg') no-repeat center/cover;
+        font-family: 'Comic Sans MS', cursive;
+        background: linear-gradient(to bottom, #ff69b4, #ffa07a);
         color: white;
         text-align: center;
         height: 100vh;
         overflow: hidden;
         position: relative;
-        z-index: 1;
       }
       .character {
         position: absolute;
-        width: 100px;
-        height: 100px;
-        z-index: 5;
+        width: 120px;
+        height: 120px;
+        transition: all 0.3s ease-out;
+      }
+      .message {
+        font-size: 28px;
+        font-weight: bold;
+        animation: fadeIn 2s;
       }
       .controls {
         position: fixed;
@@ -26,17 +30,24 @@
         width: 100%;
         display: flex;
         justify-content: center;
-        gap: 15px;
-        z-index: 10;
+        gap: 20px;
       }
       .control-btn {
-        padding: 10px 20px;
-        font-size: 18px;
-        background-color: #ff4c4c;
+        padding: 15px 25px;
+        font-size: 22px;
+        background-color: #e91e63;
         color: white;
-        border: none;
-        border-radius: 10px;
+        border: 3px solid white;
+        border-radius: 50px;
         cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .control-btn:hover {
+        background-color: #d81b60;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
       }
     </style>
   </head>
@@ -45,31 +56,32 @@
       <source src="https://docs.google.com/uc?export=download&id=1bX99FqFwEtuMAvWOp25c_L3B6D0URsjS" type="audio/mp3">
     </audio>
 
-    <img id="spiderman" src="https://pngimg.com/uploads/spider_man/spider_man_PNG63.png" class="character" style="top: 50px; left: 50px;">
-    <img id="helloKitty" src="https://www.citypng.com/public/uploads/preview/sweet-hello-kitty-ballet-dancer-transparent-background-7358116966750470e7ptokdz9.png" class="character" style="top: 200px; left: 200px;">
+    <div class="message">✨ Help Spider-Man catch Hello Kitty for Valentine's Day! ✨</div>
+    <img id="spiderman" src="https://pngimg.com/uploads/spider_man/spider_man_PNG63.png" class="character" style="top: 150px; left: 100px;">
+    <img id="helloKitty" src="https://www.citypng.com/public/uploads/preview/sweet-hello-kitty-ballet-dancer-transparent-background-7358116966750470e7ptokdz9.png" class="character" style="top: 250px; left: 300px;">
 
     <div class="controls">
-      <button class="control-btn" onclick="moveSpiderMan(0, -20)">⬆️</button>
-      <button class="control-btn" onclick="moveSpiderMan(-20, 0)">⬅️</button>
-      <button class="control-btn" onclick="moveSpiderMan(20, 0)">➡️</button>
-      <button class="control-btn" onclick="moveSpiderMan(0, 20)">⬇️</button>
+      <button class="control-btn" onclick="moveCharacter(0, -50)">⬆️</button>
+      <button class="control-btn" onclick="moveCharacter(-50, 0)">⬅️</button>
+      <button class="control-btn" onclick="moveCharacter(50, 0)">➡️</button>
+      <button class="control-btn" onclick="moveCharacter(0, 50)">⬇️</button>
     </div>
 
     <script>
-      function moveSpiderMan(dx, dy) {
+      function moveCharacter(dx, dy) {
         const spiderman = document.getElementById('spiderman');
-        console.log('Spider-Man moves');
         spiderman.style.left = (spiderman.offsetLeft + dx) + 'px';
         spiderman.style.top = (spiderman.offsetTop + dy) + 'px';
-        checkCollision();
+        checkWin();
       }
 
-      function randomPosition(element) {
-        element.style.top = Math.random() * (window.innerHeight - 120) + 'px';
-        element.style.left = Math.random() * (window.innerWidth - 120) + 'px';
+      function randomizeHelloKitty() {
+        const kitty = document.getElementById('helloKitty');
+        kitty.style.top = Math.random() * (window.innerHeight - 150) + 'px';
+        kitty.style.left = Math.random() * (window.innerWidth - 150) + 'px';
       }
 
-      function checkCollision() {
+      function checkWin() {
         const spiderman = document.getElementById('spiderman').getBoundingClientRect();
         const helloKitty = document.getElementById('helloKitty').getBoundingClientRect();
         if (
@@ -78,17 +90,16 @@
           spiderman.top < helloKitty.bottom &&
           spiderman.bottom > helloKitty.top
         ) {
-          alert('🎉 You reached Hello Kitty! Happy Valentine’s Day! 💖');
-          randomPosition(document.getElementById('helloKitty'));
+          alert('💖 Spider-Man found Hello Kitty! Happy Valentine’s Day, Mahdi! 💖');
+          randomizeHelloKitty();
         }
       }
 
-      // Quick adjustments for mobile
       document.body.addEventListener('touchstart', () => {
-        document.getElementById('backgroundMusic').play().catch(() => console.log('Autoplay blocked on mobile'));
+        document.getElementById('backgroundMusic').play().catch(() => console.log('Mobile autoplay blocked'));
       });
 
-      randomPosition(document.getElementById('helloKitty'));
+      randomizeHelloKitty();
     </script>
   </body>
 </html>
