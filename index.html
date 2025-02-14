@@ -8,50 +8,104 @@
     #startScreen {
       position: fixed; width: 100%; height: 100%; background: rgba(255, 182, 193, 0.95);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      font-size: 24px; font-weight: bold; z-index: 100;
+      font-size: 28px; font-weight: bold; z-index: 100;
     }
 
     #scoreCounter { position: absolute; top: 10px; right: 10px; font-size: 24px; color: #ff4d4d; font-weight: bold; }
-    #timer { position: absolute; top: 10px; left: 10px; font-size: 24px; color: #ff4d4d; font-weight: bold; }
     
     #spiderman {
       position: absolute; width: 80px; height: 100px;
       background: url('https://pngimg.com/uploads/spider_man/spider_man_PNG63.png') no-repeat center/contain;
       left: 100px; top: 350px; display: block;
     }
+
+    .heart {
+      position: absolute; width: 30px; height: 30px;
+      background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center/contain;
+      animation: fall 4s linear;
+    }
+    @keyframes fall { from { top: 0; } to { top: 100vh; } }
+
+    .controls { position: fixed; bottom: 20px; width: 100%; display: flex; justify-content: center; gap: 15px; }
+    .control-button { padding: 20px; font-size: 20px; background-color: #4CAF50; color: white; border-radius: 50%; cursor: pointer; }
   </style>
 </head>
 <body>
   <div id="startScreen">
     💖 Welcome to Spider-Man Valentine's Adventure 💖
+    <p>Click to Start Your Adventure!</p>
     <div class="button" onclick="startGame()">Start Game</div>
   </div>
 
   <div id="gameContainer">
-    <div id="timer">Time: 60s</div>
     <div id="scoreCounter">Score: 0</div>
     <div id="spiderman"></div>
   </div>
 
+  <div class="controls">
+    <div class="control-button" onclick="moveLeft()">⬅️</div>
+    <div class="control-button" onclick="moveUp()">⬆️</div>
+    <div class="control-button" onclick="moveDown()">⬇️</div>
+    <div class="control-button" onclick="moveRight()">➡️</div>
+  </div>
+
   <script>
-    let time = 60;
-    let timerInterval;
-    let score = 0;
-    
+    let x = 100, y = 350, score = 0;
+    const spiderman = document.getElementById('spiderman');
+    const scoreCounter = document.getElementById('scoreCounter');
+
     function startGame() {
       document.getElementById('startScreen').style.display = 'none';
-      updateTimer();
-      timerInterval = setInterval(updateTimer, 1000);
+      setInterval(createHeart, 1000);
     }
 
-    function updateTimer() {
-      time--;
-      document.getElementById('timer').innerText = `Time: ${time}s`;
-      if (time <= 0) {
-        clearInterval(timerInterval);
-        alert(`Time's up! Your score: ${score}`);
-      }
+    function createHeart() {
+      let heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.style.left = Math.random() * window.innerWidth + 'px';
+      document.body.appendChild(heart);
+
+      let fallInterval = setInterval(() => {
+        let heartTop = parseInt(heart.style.top) || 0;
+        heart.style.top = (heartTop + 5) + 'px';
+        
+        let spidermanRect = spiderman.getBoundingClientRect();
+        let heartRect = heart.getBoundingClientRect();
+
+        if (
+          heartRect.bottom >= spidermanRect.top &&
+          heartRect.top <= spidermanRect.bottom &&
+          heartRect.left <= spidermanRect.right &&
+          heartRect.right >= spidermanRect.left
+        ) {
+          score++;
+          scoreCounter.innerText = `Score: ${score}`;
+          heart.remove();
+          clearInterval(fallInterval);
+        }
+        if (heartTop > window.innerHeight) {
+          heart.remove();
+          clearInterval(fallInterval);
+        }
+      }, 20);
     }
+
+    function moveLeft() { x -= 20; updatePosition(); }
+    function moveRight() { x += 20; updatePosition(); }
+    function moveUp() { y -= 20; updatePosition(); }
+    function moveDown() { y += 20; updatePosition(); }
+    
+    function updatePosition() {
+      spiderman.style.left = x + 'px';
+      spiderman.style.top = y + 'px';
+    }
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'ArrowRight') moveRight();
+      if (event.key === 'ArrowLeft') moveLeft();
+      if (event.key === 'ArrowUp') moveUp();
+      if (event.key === 'ArrowDown') moveDown();
+    });
   </script>
 </body>
 </html>
