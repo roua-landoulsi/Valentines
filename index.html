@@ -93,7 +93,7 @@ function endGame() {
     <button class="gift-button" onclick="openGift()">🎁 Open for a Gift</button>
   `;
 }
-// Fixed 'Open for a Gift' button size and switched to audio playback from YouTube with timestamp
+// Fixed 'Open for a Gift' button size and ensured music plays
 function openGift() {
   const scoreCounter = document.getElementById('scoreCounter');
   if (scoreCounter) scoreCounter.style.display = 'none';
@@ -105,39 +105,40 @@ function openGift() {
       <h2>💌 A Special Letter 💌</h2>
       <p>Dear Mahdi,</p>
       <p>You are my superhero, my love, and my best friend. 💖 Happy Valentine's Day!</p>
-      <audio autoplay>
-        <source src="https://docs.google.com/uc?export=download&id=YOUR_AUDIO_FILE_ID" type="audio/mpeg">
-        Your browser does not support the audio element.
-      </audio>
-      <button class="big-gift-button-large" onclick="goBackToGame()">Go Back to Game</button>
-      <button class="big-gift-button-large" onclick="closeGift()">Close</button>
+      <button class="big-gift-button" onclick="goBackToGame()">Go Back to Game</button>
+      <button class="big-gift-button" onclick="closeGift()">Close</button>
     </div>
   `;
   document.body.appendChild(giftBox);
+
+  // Play audio from direct MP3 link (ensure CORS permissions are enabled)
+  const audio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+  audio.play().catch(e => console.error('Audio playback failed:', e));
 }
 
-// CSS adjustments for larger buttons
+// CSS adjustments for larger buttons and better visibility
 const giftStyle = document.createElement('style');
 giftStyle.textContent = `
-  .big-gift-button-large {
-    display: inline-block;
-    padding: 30px 80px;
-    margin: 30px;
-    font-size: 36px;
+  .big-gift-button {
+    display: block;
+    padding: 20px 50px;
+    margin: 20px auto;
+    font-size: 28px;
     font-weight: bold;
-    border-radius: 65px;
-    border: none;
+    border-radius: 40px;
+    border: 3px solid white;
     background-color: #d10000;
     color: white;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
+    transition: 0.3s;
   }
-  .big-gift-button-large:hover {
+  .big-gift-button:hover {
     background-color: #b30000;
-    transform: scale(1.15);
+    transform: scale(1.08);
   }
 `;
 document.head.appendChild(giftStyle);
+
 
 
     function moveSpiderMan(dx, dy) {
