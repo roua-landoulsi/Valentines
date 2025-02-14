@@ -93,7 +93,7 @@ function endGame() {
     <button class="gift-button" onclick="openGift()">🎁 Open for a Gift</button>
   `;
 }
-// Added specific Google Drive song link with start time at 1:58 and Go Back to Game functionality
+// Fixed overlay z-index, ensured song playback, and added Go Back buttons functionality
 function openGift() {
   // Remove existing overlays
   const existingOverlay = document.querySelector('.gift-overlay');
@@ -104,6 +104,7 @@ function openGift() {
 
   const giftBox = document.createElement('div');
   giftBox.classList.add('gift-overlay');
+  giftBox.style.zIndex = '1000'; // Ensure overlay is on top
   giftBox.innerHTML = `
     <div class="gift-content">
       <h1 class="large-gift-title">🎁 Open for a Gift 🎁</h1>
@@ -116,46 +117,57 @@ function openGift() {
   `;
   document.body.appendChild(giftBox);
 
-  // Style for big, beautiful buttons
-  const style = document.createElement('style');
-  style.textContent = `
+  // Play song with error handling
+  const audio = new Audio('https://docs.google.com/uc?export=download&id=1bX99FqFwEtuMAvWOp25c_L3B6D0URsjS');
+  audio.addEventListener('canplay', () => {
+    audio.currentTime = 118; // Start from 1:58
+    audio.play().catch(e => console.error('Audio failed to play:', e));
+  });
+  audio.loop = true;
+  audio.volume = 0.7;
+
+  // Add Go Back to Game Functionality
+  window.goBackToGame = function() {
+    document.querySelector('.gift-overlay')?.remove();
+    document.getElementById('startScreen').style.display = 'flex';
+    document.getElementById('gameContainer').style.display = 'none';
+    document.getElementById('endScreen').style.display = 'none';
+  };
+
+  window.closeGift = function() {
+    document.querySelector('.gift-overlay')?.remove();
+    if (scoreCounter) scoreCounter.style.display = 'block';
+  };
+
+  // Ensure overlay covers everything properly
+  const overlayStyle = document.createElement('style');
+  overlayStyle.textContent = `
+    .gift-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
     .fancy-large-button {
-      padding: 25px 70px;
+      padding: 20px 70px;
       font-size: 32px;
       font-weight: bold;
       color: white;
       background: linear-gradient(135deg, #ff4d4d, #ff9999);
-      border-radius: 50px;
-      border: 4px solid white;
-      cursor: pointer;
-      transition: all 0.3s;
-      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+      border-radius: 45px;
+      margin: 20px;
+      transition: transform 0.2s;
     }
     .fancy-large-button:hover {
-      background: linear-gradient(135deg, #ff3333, #ff8080);
-      transform: scale(1.05);
+      transform: scale(1.12);
     }
   `;
-  document.head.appendChild(style);
-
-  // Play specific custom song from Google Drive starting at 1:58
-  const audio = new Audio('https://docs.google.com/uc?export=download&id=1bX99FqFwEtuMAvWOp25c_L3B6D0URsjS');
-  audio.addEventListener('canplay', () => {
-    audio.currentTime = 118;
-    audio.play();
-  });
-  audio.loop = true;
-  audio.volume = 0.7;
-  audio.play().catch(e => console.error('Audio playback failed:', e));
-}
-
-// Added Go Back to Game functionality
-function goBackToGame() {
-  const overlay = document.querySelector('.gift-overlay');
-  if (overlay) overlay.remove();
-  document.getElementById('startScreen').style.display = 'flex';
-  document.getElementById('gameContainer').style.display = 'none';
-  document.getElementById('endScreen').style.display = 'none';
+  document.head.appendChild(overlayStyle);
 }
 
     function moveSpiderMan(dx, dy) {
