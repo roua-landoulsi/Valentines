@@ -10,13 +10,16 @@
         height: 100vh;
         overflow: hidden;
         position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
       }
       .title {
-        font-size: 38px;
+        font-size: 32px;
         font-weight: bold;
         color: #fff;
-        text-align: center;
-        padding: 30px;
+        padding: 10px;
       }
       .heart {
         position: absolute;
@@ -26,31 +29,64 @@
       }
       .scoreboard, .timer {
         position: fixed;
-        font-size: 25px;
+        font-size: 22px;
         color: white;
         background-color: rgba(0, 0, 0, 0.5);
         padding: 8px 16px;
         border-radius: 10px;
       }
-      .scoreboard {
-        top: 20px;
-        right: 20px;
-      }
-      .timer {
-        top: 20px;
-        left: 20px;
+      .scoreboard { top: 20px; right: 20px; }
+      .timer { top: 20px; left: 20px; }
+      .start-button {
+        padding: 15px 30px;
+        font-size: 24px;
+        font-weight: bold;
+        color: white;
+        background-color: #e91e63;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
       }
     </style>
   </head>
   <body>
-    <div class="title"> Mahdi catch the Falling Hearts! 1 Minute Challenge ⏳</div>
-    <div id="timer" class="timer">Time: 60s</div>
-    <div id="score" class="scoreboard">Score: 0</div>
+    <div class="title">💖 Heart Rain Challenge! Tap Hearts to Score ⏳</div>
+    <div id="timer" class="timer" style="display:none;">Time: 60s</div>
+    <div id="score" class="scoreboard" style="display:none;">Score: 0</div>
+    <button class="start-button" onclick="startGame()">Start Game</button>
 
     <script>
       let score = 0;
-      let gameActive = true;
+      let gameActive = false;
       let timeRemaining = 60;
+      let heartRain, countdown;
+
+      function startGame() {
+        document.querySelector('.start-button').style.display = 'none';
+        document.getElementById('timer').style.display = 'block';
+        document.getElementById('score').style.display = 'block';
+        gameActive = true;
+        score = 0;
+        timeRemaining = 60;
+        updateScore();
+        updateTimer();
+
+        heartRain = setInterval(() => {
+          if (gameActive) dropHeart();
+        }, 300);
+
+        countdown = setInterval(() => {
+          if (timeRemaining > 0) {
+            timeRemaining--;
+            updateTimer();
+          } else {
+            clearInterval(countdown);
+            clearInterval(heartRain);
+            gameActive = false;
+            alert(`Time's up! Your final score: ${score} 💖`);
+          }
+        }, 1000);
+      }
 
       function dropHeart() {
         const heart = document.createElement('div');
@@ -83,22 +119,7 @@
       function updateTimer() {
         document.getElementById('timer').innerText = `Time: ${timeRemaining}s`;
       }
-
-      const heartRain = setInterval(() => {
-        if (gameActive) dropHeart();
-      }, 300);
-
-      const countdown = setInterval(() => {
-        if (timeRemaining > 0) {
-          timeRemaining--;
-          updateTimer();
-        } else {
-          clearInterval(countdown);
-          clearInterval(heartRain);
-          gameActive = false;
-          alert(`Time's up Habibi! Your final score is ${score} 💖 ama it's okay mezelet n7ebek Happy Valentine's`);
-        }
-      }, 1000);
     </script>
   </body>
 </html>
+
