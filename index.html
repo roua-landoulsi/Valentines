@@ -87,6 +87,67 @@
       document.getElementById('finalScore').innerText = score;
     }
 
+    // Added 'Open for a Gift' feature at the end of the game with a letter and song
+// Add buttons for Play Again and Open for a Gift
+
+document.getElementById('endScreen').innerHTML = `
+  <p>Your Score: <span id="finalScore"></span></p>
+  <button class="restart-button" onclick="location.reload()">🔄 Play Again</button>
+  <button class="gift-button" onclick="openGift()">🎁 Open for a Gift</button>
+`;
+
+// Add Gift Feature Function
+function openGift() {
+  const giftBox = document.createElement('div');
+  giftBox.innerHTML = `
+    <div class="gift-content">
+      <h2>💌 A Special Letter 💌</h2>
+      <p> habibi,</p>
+      <p>You are my superhero, my love, and my best friend. 💖 Happy Valentine's Day!</p>
+    </div>
+  `;
+  giftBox.classList.add('gift-overlay');
+  document.body.appendChild(giftBox);
+
+  // Play a romantic song
+  const audio = new Audio('https://www.bensound.com/bensound-music/bensound-romantic.mp3');
+  audio.play();
+}
+
+// Add CSS for Gift Overlay
+const giftStyle = document.createElement('style');
+giftStyle.textContent = `
+  .gift-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 22px;
+    text-align: center;
+  }
+  .gift-content {
+    background: pink;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.7);
+  }
+  .gift-button {
+    padding: 12px 25px;
+    margin: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 12px;
+    background-color: #f39c12;
+    color: white;
+    cursor: pointer;
+  }
+`;
+document.head.appendChild(giftStyle);
+
     function moveSpiderMan(dx, dy) {
       x += dx;
       y += dy;
