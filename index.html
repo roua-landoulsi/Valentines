@@ -13,7 +13,6 @@
 
     .button { background-color: #ff4d4d; color: white; padding: 10px 20px; font-size: 18px; border-radius: 10px; cursor: pointer; }
     #scoreCounter { position: absolute; top: 10px; right: 10px; font-size: 24px; color: #ff4d4d; font-weight: bold; }
-    #timer { position: absolute; top: 10px; left: 10px; font-size: 24px; color: #ff4d4d; font-weight: bold; }
     #spiderman { position: absolute; width: 80px; height: 100px; background: url('https://pngimg.com/uploads/spider_man/spider_man_PNG63.png') no-repeat center/contain; left: 100px; top: 350px; display: block; }
 
     .heart { position: absolute; width: 30px; height: 30px; background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center/contain; animation: fall 4s linear; }
@@ -31,7 +30,6 @@
 
   <div id="gameContainer">
     <div id="scoreCounter">Score: 0</div>
-    <div id="timer">Time: 60s</div>
     <div id="spiderman"></div>
   </div>
 
@@ -43,25 +41,13 @@
   </div>
 
   <script>
-    let x = 100, y = 350, score = 0, time = 60;
-    let timerInterval, heartInterval;
+    let x = 100, y = 350, score = 0;
     const spiderman = document.getElementById('spiderman');
+    const scoreCounter = document.getElementById('scoreCounter');
 
     function startGame() {
       document.getElementById('startScreen').style.display = 'none';
-      updateTimer();
-      timerInterval = setInterval(updateTimer, 1000);
-      heartInterval = setInterval(createHeart, 1000);
-    }
-
-    function updateTimer() {
-      time--;
-      document.getElementById('timer').innerText = `Time: ${time}s`;
-      if (time <= 0) {
-        clearInterval(timerInterval);
-        clearInterval(heartInterval);
-        alert(`Time's up! Your score: ${score}`);
-      }
+      setInterval(createHeart, 1000);
     }
 
     function createHeart() {
@@ -69,7 +55,30 @@
       heart.className = 'heart';
       heart.style.left = Math.random() * window.innerWidth + 'px';
       document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 4000);
+
+      let fallInterval = setInterval(() => {
+        let heartTop = parseInt(heart.style.top) || 0;
+        heart.style.top = (heartTop + 5) + 'px';
+        
+        let spidermanRect = spiderman.getBoundingClientRect();
+        let heartRect = heart.getBoundingClientRect();
+
+        if (
+          heartRect.bottom >= spidermanRect.top &&
+          heartRect.top <= spidermanRect.bottom &&
+          heartRect.left <= spidermanRect.right &&
+          heartRect.right >= spidermanRect.left
+        ) {
+          score++;
+          scoreCounter.innerText = `Score: ${score}`;
+          heart.remove();
+          clearInterval(fallInterval);
+        }
+        if (heartTop > window.innerHeight) {
+          heart.remove();
+          clearInterval(fallInterval);
+        }
+      }, 20);
     }
 
     function moveLeft() { x -= 20; updatePosition(); }
@@ -92,3 +101,4 @@
 </body>
 </html>
 
+  
