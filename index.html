@@ -94,25 +94,31 @@ function endGame() {
   `;
 }
 
-// Add Gift Feature Function
+// Fixed 'Open for a Gift' to display the letter and play the song
 function openGift() {
+  // Remove any existing gift overlays before adding a new one
+  const existingGift = document.querySelector('.gift-overlay');
+  if (existingGift) existingGift.remove();
+
+  // Create and display the letter overlay
   const giftBox = document.createElement('div');
+  giftBox.classList.add('gift-overlay');
   giftBox.innerHTML = `
     <div class="gift-content">
       <h2>💌 A Special Letter 💌</h2>
       <p>Dear Mahdi,</p>
       <p>You are my superhero, my love, and my best friend. 💖 Happy Valentine's Day!</p>
+      <button onclick="this.parentElement.parentElement.remove()">Close</button>
     </div>
   `;
-  giftBox.classList.add('gift-overlay');
   document.body.appendChild(giftBox);
 
-  // Play a romantic song
+  // Play the romantic song
   const audio = new Audio('https://www.bensound.com/bensound-music/bensound-romantic.mp3');
   audio.play();
 }
 
-// Add CSS for Gift Overlay
+// Ensure CSS is applied for gift overlay
 const giftStyle = document.createElement('style');
 giftStyle.textContent = `
   .gift-overlay {
@@ -121,6 +127,7 @@ giftStyle.textContent = `
     width: 100%; height: 100%;
     background: rgba(0, 0, 0, 0.8);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     color: white;
@@ -135,13 +142,13 @@ giftStyle.textContent = `
     box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.7);
     font-family: Arial, sans-serif;
   }
-  .gift-button {
-    padding: 12px 25px;
-    margin: 15px;
-    font-size: 20px;
-    font-weight: bold;
-    border-radius: 12px;
-    background-color: #f39c12;
+  .gift-content button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 10px;
+    border: none;
+    background-color: #d10000;
     color: white;
     cursor: pointer;
   }
