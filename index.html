@@ -15,7 +15,7 @@
               border-radius: 10px; cursor: pointer; margin-top: 20px; }
 
     #gameContainer {
-      position: relative; width: 1200vw; height: 100vh;
+      position: relative; width: 1500vw; height: 100vh;
       background: url('https://wallpapers.com/images/high/hello-kitty-spiderman-heart-hnkzdcepdjizhvuw.webp') repeat-x;
       overflow-x: scroll;
     }
@@ -35,7 +35,7 @@
     #helloKitty {
       position: absolute; width: 100px; height: 120px;
       background: url('https://upload.wikimedia.org/wikipedia/commons/3/3e/Hello_Kitty.svg') no-repeat center/contain;
-      left: 1180vw; bottom: 150px; z-index: 150;
+      left: 1480vw; bottom: 150px; display: block;
     }
   </style>
 </head>
@@ -48,23 +48,36 @@
   <div id="gameContainer">
     <div id="spiderman"></div>
     <div id="helloKitty"></div>
-    <div class="platform" style="left: 150px; bottom: 250px;"></div>
-    <div class="platform" style="left: 300px; bottom: 300px;"></div>
-    <div class="platform" style="left: 500px; bottom: 250px;"></div>
-    <div class="platform" style="left: 700px; bottom: 300px;"></div>
-    <div class="platform" style="left: 900px; bottom: 250px;"></div>
-    <div class="platform" style="left: 1100px; bottom: 200px;"></div>
+    <div class="platform" style="left: 200px; bottom: 250px;"></div>
+    <div class="platform" style="left: 400px; bottom: 300px;"></div>
+    <div class="platform" style="left: 600px; bottom: 250px;"></div>
+    <div class="platform" style="left: 800px; bottom: 300px;"></div>
+    <div class="platform" style="left: 1000px; bottom: 250px;"></div>
+    <div class="platform" style="left: 1200px; bottom: 200px;"></div>
   </div>
 
   <script>
+    let spiderman = document.getElementById('spiderman');
+    let x = 100, y = 350, speed = 15;
+
     function startGame() {
       document.getElementById('startScreen').style.display = 'none';
-      document.getElementById('spiderman').style.display = 'block';
-      document.getElementById('helloKitty').style.display = 'block';
+      spiderman.style.display = 'block';
     }
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'ArrowRight') x += speed;
+      if (event.key === 'ArrowLeft') x -= speed;
+      if (event.key === 'ArrowUp') y -= speed;
+      if (event.key === 'ArrowDown') y += speed;
+
+      spiderman.style.left = x + 'px';
+      spiderman.style.top = y + 'px';
+    });
   </script>
 </body>
 </html>
+
 
 
 
