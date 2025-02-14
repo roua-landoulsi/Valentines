@@ -6,72 +6,80 @@
       body {
         margin: 0;
         font-family: Arial, sans-serif;
-        background-color: black;
+        background: url('https://wallpapers.com/images/high/hello-kitty-spiderman-heart.jpg') no-repeat center/cover;
         color: white;
         text-align: center;
         height: 100vh;
         overflow: hidden;
+        position: relative;
       }
-      .screen {
+      .character {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+      }
+      .controls {
+        position: fixed;
+        bottom: 20px;
+        width: 100%;
         display: flex;
-        flex-direction: column;
-        align-items: center;
         justify-content: center;
-        height: 100vh;
+        gap: 15px;
       }
-      button {
-        padding: 15px 30px;
-        font-size: 20px;
+      .control-btn {
+        padding: 10px 20px;
+        font-size: 18px;
         background-color: #ff4c4c;
         color: white;
         border: none;
         border-radius: 10px;
         cursor: pointer;
-        margin: 10px;
-      }
-      button:hover {
-        background-color: #d10000;
       }
     </style>
   </head>
   <body>
-    <audio id="backgroundMusic" loop>
+    <audio id="backgroundMusic" loop autoplay>
       <source src="https://docs.google.com/uc?export=download&id=1bX99FqFwEtuMAvWOp25c_L3B6D0URsjS" type="audio/mp3">
     </audio>
 
-    <div id="startScreen" class="screen">
-      <h1>💖 Happy Valentine's Mahdi 💖</h1>
-      <button onclick="startGame()">Start Game</button>
-    </div>
+    <img id="spiderman" src="https://pngimg.com/uploads/spider_man/spider_man_PNG63.png" class="character" style="top: 50px; left: 50px;">
+    <img id="helloKitty" src="https://www.citypng.com/public/uploads/preview/sweet-hello-kitty-ballet-dancer-transparent-background-7358116966750470e7ptokdz9.png" class="character" style="top: 200px; left: 200px;">
 
-    <div id="gameScreen" class="screen" style="display:none;">
-      <p>Help Spider-Man reach Hello Kitty!</p>
-      <button onclick="finishGame()">Finish Mission</button>
-    </div>
-
-    <div id="giftScreen" class="screen" style="display:none;">
-      <h2>💌 A Special Letter 💌</h2>
-      <p>N7ebek Mahdi,</p>
-      <p>You are my superhero. Happy Valentine's Day baby! 💖</p>
-      <button onclick="restartGame()">Play Again</button>
+    <div class="controls">
+      <button class="control-btn" onclick="moveSpiderMan(0, -20)">⬆️</button>
+      <button class="control-btn" onclick="moveSpiderMan(-20, 0)">⬅️</button>
+      <button class="control-btn" onclick="moveSpiderMan(20, 0)">➡️</button>
+      <button class="control-btn" onclick="moveSpiderMan(0, 20)">⬇️</button>
     </div>
 
     <script>
-      function startGame() {
-        document.getElementById('startScreen').style.display = 'none';
-        document.getElementById('gameScreen').style.display = 'flex';
-        document.getElementById('backgroundMusic').play().catch(() => console.log('Autoplay blocked'));
+      function moveSpiderMan(dx, dy) {
+        const spiderman = document.getElementById('spiderman');
+        spiderman.style.left = (spiderman.offsetLeft + dx) + 'px';
+        spiderman.style.top = (spiderman.offsetTop + dy) + 'px';
+        checkCollision();
       }
 
-      function finishGame() {
-        document.getElementById('gameScreen').style.display = 'none';
-        document.getElementById('giftScreen').style.display = 'flex';
+      function randomPosition(element) {
+        element.style.top = Math.random() * (window.innerHeight - 120) + 'px';
+        element.style.left = Math.random() * (window.innerWidth - 120) + 'px';
       }
 
-      function restartGame() {
-        document.getElementById('giftScreen').style.display = 'none';
-        document.getElementById('startScreen').style.display = 'flex';
+      function checkCollision() {
+        const spiderman = document.getElementById('spiderman').getBoundingClientRect();
+        const helloKitty = document.getElementById('helloKitty').getBoundingClientRect();
+        if (
+          spiderman.left < helloKitty.right &&
+          spiderman.right > helloKitty.left &&
+          spiderman.top < helloKitty.bottom &&
+          spiderman.bottom > helloKitty.top
+        ) {
+          alert('🎉 You reached Hello Kitty! Happy Valentine’s Day! 💖');
+          randomPosition(document.getElementById('helloKitty'));
+        }
       }
+
+      randomPosition(document.getElementById('helloKitty'));
     </script>
   </body>
 </html>
