@@ -93,7 +93,7 @@ function endGame() {
     <button class="gift-button" onclick="openGift()">🎁 Open for a Gift</button>
   `;
 }
-// Improved 'Open for a Gift' overlay with 'Go Back to Game' button
+// Updated to play a specific YouTube song from a specific timestamp and adjusted button styling
 function openGift() {
   const scoreCounter = document.getElementById('scoreCounter');
   if (scoreCounter) scoreCounter.style.display = 'none';
@@ -105,13 +105,14 @@ function openGift() {
       <h2>💌 A Special Letter 💌</h2>
       <p>Dear Mahdi,</p>
       <p>You are my superhero, my love, and my best friend. 💖 Happy Valentine's Day!</p>
-      <button onclick="goBackToGame()">Go Back to Game</button>
-      <button onclick="closeGift()">Close</button>
+      <button class="big-gift-button" onclick="goBackToGame()">Go Back to Game</button>
+      <button class="big-gift-button" onclick="closeGift()">Close</button>
     </div>
   `;
   document.body.appendChild(giftBox);
 
-  const audio = new Audio('https://www.bensound.com/bensound-music/bensound-romantic.mp3');
+  // Play YouTube audio from a specific time (1:57)
+  const audio = new Audio('https://www.youtubeinmp3.com/fetch/?video=https://youtu.be/O6P-r8xa0KM&t=117');
   audio.play();
 }
 
@@ -151,7 +152,7 @@ giftStyle.textContent = `
   }
   .gift-content {
     background: #ffe0e0;
-    padding: 40px;
+    padding: 50px;
     border-radius: 20px;
     box-shadow: 0px 0px 30px rgba(255, 255, 255, 0.95);
     font-family: Arial, sans-serif;
@@ -159,20 +160,22 @@ giftStyle.textContent = `
     font-weight: bold;
     border: 6px solid white;
   }
-  .gift-content button {
-    margin: 15px;
-    padding: 14px 28px;
-    font-size: 22px;
-    border-radius: 12px;
+  .big-gift-button {
+    display: inline-block;
+    padding: 20px 45px;
+    margin: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    border-radius: 50px;
     border: none;
     background-color: #d10000;
     color: white;
-    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
   }
-  .gift-content button:hover {
+  .big-gift-button:hover {
     background-color: #b30000;
+    transform: scale(1.05);
   }
 `;
 document.head.appendChild(giftStyle);
