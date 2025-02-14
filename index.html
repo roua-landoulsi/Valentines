@@ -15,28 +15,22 @@
         overflow: hidden;
       }
       #scoreCounter, #timer {
-        font-size: 24px;
+        font-size: 20px;
         font-weight: bold;
         color: white;
         padding: 10px;
         background: rgba(0, 0, 0, 0.5);
         border-radius: 10px;
         position: fixed;
-        z-index: 50;
       }
-      #scoreCounter { top: 20px; left: 20px; }
-      #timer { top: 20px; right: 20px; }
+      #scoreCounter { top: 10px; left: 10px; }
+      #timer { top: 10px; right: 10px; }
     </style>
   </head>
   <body>
-    <audio id="backgroundMusic" loop>
+    <audio id="backgroundMusic" autoplay loop>
       <source src="https://docs.google.com/uc?export=download&id=1bX99FqFwEtuMAvWOp25c_L3B6D0URsjS" type="audio/mp3">
     </audio>
-
-    <div id="startScreen">
-      <h1>💖 Happy Valentine's Mahdi 💖</h1>
-      <button onclick="startGame()">Start Game</button>
-    </div>
 
     <div id="scoreCounter">Score: 0</div>
     <div id="timer">Time: 60s</div>
@@ -44,15 +38,6 @@
     <script>
       let score = 0;
       let time = 60;
-
-      function startGame() {
-        document.getElementById('startScreen').style.display = 'none';
-        document.getElementById('backgroundMusic').play().catch(() => console.log('Music autoplay blocked'));
-        showHearts();
-        updateScore();
-        createTimer();
-        setTimeout(showGiftLetter, 60000);
-      }
 
       function updateScore() {
         document.getElementById('scoreCounter').innerText = `Score: ${score}`;
@@ -86,6 +71,7 @@
           if (time <= 0) {
             clearInterval(timerInterval);
             alert(`Game Over! Your Score: ${score}`);
+            showGiftLetter();
           }
         }, 1000);
       }
@@ -113,6 +99,11 @@
         overlay.style.zIndex = '100';
         document.body.appendChild(overlay);
       }
+
+      // Start the game automatically when the page loads
+      updateScore();
+      showHearts();
+      createTimer();
     </script>
   </body>
 </html>
