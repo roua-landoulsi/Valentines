@@ -108,6 +108,38 @@
       setInterval(updateTimer, 1000);
       setInterval(createHeart, 800);
     }
+// Add on-screen mobile controls
+document.body.insertAdjacentHTML('beforeend', `
+  <div class="controls">
+    <button onclick="moveSpiderMan(-20, 0)">⬅️</button>
+    <button onclick="moveSpiderMan(20, 0)">➡️</button>
+    <button onclick="moveSpiderMan(0, -20)">⬆️</button>
+    <button onclick="moveSpiderMan(0, 20)">⬇️</button>
+  </div>
+`);
+
+// Style mobile controls
+const style = document.createElement('style');
+style.textContent = `
+  .controls {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+  }
+  button {
+    padding: 10px 15px;
+    font-size: 20px;
+    border-radius: 50%;
+    border: none;
+    background-color: #d10000;
+    color: white;
+    cursor: pointer;
+  }
+`;
+document.head.appendChild(style);
   </script>
 </body>
 </html>
