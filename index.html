@@ -21,7 +21,8 @@
     .heart {
       position: absolute;
       width: 30px;
-      height: 30px;https://static.vecteezy.com/system/resources/previews/033/034/173/non_2x/pixel-heart-pixel-art-illustration-8-bit-heart-icon-red-heart-pixel-graphic-video-game-heart-icon-vector.jpg') no-repeat center/contain;
+      height: 30px;
+      background: url('https://static.vecteezy.com/system/resources/previews/033/034/173/non_2x/pixel-heart-pixel-art-illustration-8-bit-heart-icon-red-heart-pixel-graphic-video-game-heart-icon-vector.jpg') no-repeat center/contain;
       background-size: cover;
     }
   </style>
@@ -43,27 +44,36 @@
   <script>
     let time = 60, score = 0, x = 100, y = 350;
 
-    function createHeart() {
-      const heart = document.createElement('div');
-      heart.classList.add('heart');
-      heart.style.left = `${Math.random() * window.innerWidth}px`;
-      heart.style.top = '0px';
-      document.body.appendChild(heart);
+   function createHeart() {
+  const heart = document.createElement('div');
+  heart.classList.add('heart');
+  heart.style.position = 'absolute';
+  heart.style.left = `${Math.random() * (window.innerWidth - 30)}px`;
+  heart.style.top = '0px';
+  document.body.appendChild(heart);
 
-      const fallInterval = setInterval(() => {
-        heart.style.top = `${parseInt(heart.style.top) + 5}px`;
-        if (parseInt(heart.style.top) > window.innerHeight) {
-          heart.remove();
-          clearInterval(fallInterval);
-        }
-        if (Math.abs(x - parseInt(heart.style.left)) < 30 && Math.abs(y - parseInt(heart.style.top)) < 30) {
-          score++;
-          document.getElementById('scoreCounter').innerText = `Score: ${score}`;
-          heart.remove();
-          clearInterval(fallInterval);
-        }
-      }, 30);
+  const fallInterval = setInterval(() => {
+    heart.style.top = `${parseInt(heart.style.top) + 5}px`;
+
+    // Check collision with Spider-Man
+    if (
+      Math.abs(x - parseInt(heart.style.left)) < 40 &&
+      Math.abs(y - parseInt(heart.style.top)) < 40
+    ) {
+      score++;
+      document.getElementById('scoreCounter').innerText = `Score: ${score}`;
+      heart.remove();
+      clearInterval(fallInterval);
+      return;
     }
+
+    // Remove heart if it reaches bottom
+    if (parseInt(heart.style.top) > window.innerHeight) {
+      heart.remove();
+      clearInterval(fallInterval);
+    }
+  }, 20);
+}
 
     function updateTimer() {
       document.getElementById('timer').innerText = `Time: ${time}s`;
