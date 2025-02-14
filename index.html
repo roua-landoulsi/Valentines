@@ -1,95 +1,82 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>🎉 Star Catcher Adventure 🎉</title>
+    <title>💖 Heart Collector Challenge 💖</title>
     <style>
       body {
         margin: 0;
         font-family: 'Arial', sans-serif;
-        background: linear-gradient(to bottom, #1e3a8a, #3b82f6);
+        background: linear-gradient(to bottom, #fbc2eb, #a6c1ee);
         height: 100vh;
         overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+        position: relative;
       }
       .title {
-        font-size: 48px;
+        font-size: 36px;
         font-weight: bold;
         color: #fff;
-        animation: pulse 1.5s infinite;
+        text-align: center;
+        padding: 20px;
       }
-      @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-        100% { transform: scale(1); }
-      }
-      .star, .player {
+      .heart {
         position: absolute;
-        width: 80px;
-        height: 80px;
+        width: 50px;
+        height: 50px;
+        background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center/cover;
       }
-      .controls {
+      .scoreboard {
         position: fixed;
-        bottom: 20px;
-        display: flex;
-        gap: 15px;
-      }
-      .control-btn {
-        padding: 14px;
-        font-size: 20px;
-        background-color: #4caf50;
+        top: 20px;
+        right: 20px;
+        font-size: 24px;
         color: white;
-        border-radius: 10px;
-        cursor: pointer;
-      }
-      .control-btn:hover {
-        background-color: #388e3c;
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 10px 20px;
+        border-radius: 12px;
       }
     </style>
   </head>
   <body>
-    <div class="title">✨ Collect the Star! ✨</div>
-    <img id="player" src="https://pngimg.com/uploads/star/star_PNG41479.png" class="player" style="top: 150px; left: 150px;">
-    <img id="star" src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png" class="star" style="top: 250px; left: 250px;">
-
-    <div class="controls">
-      <button class="control-btn" onclick="movePlayer(0, -40)">⬆️</button>
-      <button class="control-btn" onclick="movePlayer(-40, 0)">⬅️</button>
-      <button class="control-btn" onclick="movePlayer(40, 0)">➡️</button>
-      <button class="control-btn" onclick="movePlayer(0, 40)">⬇️</button>
-    </div>
+    <div class="title">💖 Tap Hearts to Collect! 1 Minute Challenge! ⏳</div>
+    <div id="score" class="scoreboard">Score: 0</div>
 
     <script>
-      function movePlayer(dx, dy) {
-        const player = document.getElementById('player');
-        player.style.left = (player.offsetLeft + dx) + 'px';
-        player.style.top = (player.offsetTop + dy) + 'px';
-        checkWin();
+      let score = 0;
+      let gameActive = true;
+
+      function createHeart(x, y) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.style.left = `${x - 25}px`;
+        heart.style.top = `${y - 25}px`;
+        document.body.appendChild(heart);
+
+        heart.addEventListener('click', () => {
+          if (gameActive) {
+            score++;
+            updateScore();
+            heart.remove();
+          }
+        });
+
+        setTimeout(() => heart.remove(), 2000);
       }
 
-      function randomizeStar() {
-        const star = document.getElementById('star');
-        star.style.top = Math.random() * (window.innerHeight - 100) + 'px';
-        star.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+      function updateScore() {
+        document.getElementById('score').innerText = `Score: ${score}`;
       }
 
-      function checkWin() {
-        const player = document.getElementById('player').getBoundingClientRect();
-        const star = document.getElementById('star').getBoundingClientRect();
-        if (
-          player.left < star.right &&
-          player.right > star.left &&
-          player.top < star.bottom &&
-          player.bottom > star.top
-        ) {
-          alert('🌟 You caught the star! Well done! 🎉');
-          randomizeStar();
+      document.body.addEventListener('click', (e) => {
+        if (gameActive) {
+          createHeart(e.clientX, e.clientY);
         }
-      }
+      });
 
-      randomizeStar();
+      setTimeout(() => {
+        gameActive = false;
+        alert(`Time's up! Your final score: ${score} 💖`);
+      }, 60000);
     </script>
   </body>
 </html>
+
