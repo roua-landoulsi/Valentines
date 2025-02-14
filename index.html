@@ -15,7 +15,7 @@
               border-radius: 10px; cursor: pointer; margin-top: 20px; }
 
     #gameContainer {
-      position: relative; width: 1000vw; height: 100vh;
+      position: relative; width: 1200vw; height: 100vh;
       background: url('https://wallpapers.com/images/high/hello-kitty-spiderman-heart-hnkzdcepdjizhvuw.webp') repeat-x;
       overflow-x: scroll;
     }
@@ -26,16 +26,16 @@
     }
 
     #spiderman {
-      position: absolute; width: 80px; height: 100px;
-      background: url('https://images-wixmp-ed30a86b8c4ca887773594c2.png') no-repeat center/contain;
+      position: absolute; width: 100px; height: 120px;
+      background: url('https://pngimg.com/uploads/spider_man/spider_man_PNG63.png') no-repeat center/contain;
       background-size: cover;
-      left: 50px; top: 350px; display: block;
+      left: 100px; top: 350px; z-index: 150; display: block;
     }
 
     #helloKitty {
-      position: absolute; width: 80px; height: 100px;
-      background: url('https://www.citypng.com/public/uploads/preview/sweet-hello-kitty-ballet-dancer-transparent-background-7358116966750470e7ptokdz9.png') no-repeat center/contain;
-      left: 980vw; bottom: 150px;
+      position: absolute; width: 100px; height: 120px;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/3/3e/Hello_Kitty.svg') no-repeat center/contain;
+      left: 1180vw; bottom: 150px; z-index: 150;
     }
   </style>
 </head>
@@ -48,22 +48,23 @@
   <div id="gameContainer">
     <div id="spiderman"></div>
     <div id="helloKitty"></div>
-    <div class="platform" style="left: 200px; bottom: 250px;"></div>
-    <div class="platform" style="left: 400px; bottom: 350px;"></div>
-    <div class="platform" style="left: 600px; bottom: 250px;"></div>
-    <div class="platform" style="left: 800px; bottom: 300px;"></div>
-    <div class="platform" style="left: 1000px; bottom: 250px;"></div>
-    <div class="platform" style="left: 1200px; bottom: 200px;"></div>
-    <div class="platform" style="left: 1400px; bottom: 250px;"></div>
+    <div class="platform" style="left: 150px; bottom: 250px;"></div>
+    <div class="platform" style="left: 300px; bottom: 300px;"></div>
+    <div class="platform" style="left: 500px; bottom: 250px;"></div>
+    <div class="platform" style="left: 700px; bottom: 300px;"></div>
+    <div class="platform" style="left: 900px; bottom: 250px;"></div>
+    <div class="platform" style="left: 1100px; bottom: 200px;"></div>
   </div>
 
   <script>
     function startGame() {
       document.getElementById('startScreen').style.display = 'none';
       document.getElementById('spiderman').style.display = 'block';
+      document.getElementById('helloKitty').style.display = 'block';
     }
   </script>
 </body>
 </html>
+
 
 
