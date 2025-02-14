@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title> Mahdi's Valentine's game 💖</title>
+    <title>Mahdi's Valentine's Game 💖</title>
     <style>
-       body {
+      body {
         margin: 0;
         font-family: Arial, sans-serif;
         background-color: #000;
@@ -13,177 +13,63 @@
         background-repeat: no-repeat;
         height: 100vh;
         overflow: hidden;
-        position: relative;
-      }
-      .start-screen {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.85);
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        z-index: 100;
-      }
-      .start-button {
-        padding: 20px 50px;
-        font-size: 28px;
-        font-weight: bold;
-        color: white;
-        background-color: #ff4c4c;
-        border: none;
-        border-radius: 30px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-      }
-      .start-button:hover {
-        background-color: #cc0000;
-      }
-      #scoreCounter, #timer {
-        font-size: 20px;
-        font-weight: bold;
-        color: white;
-        padding: 10px;
-        background: rgba(0, 0, 0, 0.5);
-        border-radius: 10px;
-        position: fixed;
-      }
-      #scoreCounter { top: 10px; left: 10px; }
-      #timer { top: 10px; right: 10px; }
-      .mobile-controls {
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        gap: 10px;
-      }
-      .control-btn {
-        padding: 15px;
-        font-size: 20px;
-        background-color: #d10000;
-        color: white;
-        border-radius: 50%;
-        cursor: pointer;
-      }
-      .heart {
-        position: absolute;
-        width: 30px;
-        height: 30px;
-        background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center/cover;
       }
     </style>
   </head>
   <body>
-    <audio id="backgroundMusic" autoplay loop>
+    <audio id="backgroundMusic" loop>
       <source src="https://docs.google.com/uc?export=download&id=1bX99FqFwEtuMAvWOp25c_L3B6D0URsjS" type="audio/mp3">
     </audio>
 
-  
-    <div id="startScreen" class="start-screen">
-      <h1>💖 Happy Valentine's Mahdi  💖</h1>
-      <button class="start-button" onclick="startGame()">Start Game</button>
+    <div id="startScreen">
+      <h1>💖 Happy Valentine's Mahdi 💖</h1>
+      <button onclick="startGame()">Start Game</button>
     </div>
 
-    <div id="spiderman" style="position:absolute;width:80px;height:100px;background:url('https://pngimg.com/uploads/spider_man/spider_man_PNG63.png') no-repeat center/cover;display:none;"></div>
-    <div id="scoreCounter" style="display:none;">Score: 0</div>
-    <div id="timer" style="display:none;">Time: 60s</div>
-
+    <div id="scoreCounter">Score: 0</div>
+    <div id="timer">Time: 60s</div>
 
     <script>
-
-     function startGame() {
+      function startGame() {
         document.getElementById('startScreen').style.display = 'none';
         document.getElementById('backgroundMusic').play().catch(() => console.log('Music autoplay blocked'));
-        document.getElementById('spiderman').style.display = 'block';
-        document.getElementById('scoreCounter').style.display = 'block';
-        document.getElementById('timer').style.display = 'block';
-        
-     function createMobileControls() {
-        const controls = document.createElement('div');
-        controls.classList.add('mobile-controls');
-        controls.innerHTML = `
-          <button class="control-btn" onclick="moveSpiderMan(-20, 0)">⬅️</button>
-          <button class="control-btn" onclick="moveSpiderMan(20, 0)">➡️</button>
-          <button class="control-btn" onclick="moveSpiderMan(0, -20)">⬆️</button>
-          <button class="control-btn" onclick="moveSpiderMan(0, 20)">⬇️</button>
-        `;
-        document.body.appendChild(controls);
+        showHearts();
+        createTimer();
       }
 
       let score = 0;
       function updateScore() {
         document.getElementById('scoreCounter').innerText = `Score: ${score}`;
       }
-      
+
       function showHearts() {
         setInterval(() => {
           const heart = document.createElement('div');
-          heart.classList.add('heart');
+          heart.className = 'heart';
           heart.style.left = `${Math.random() * window.innerWidth}px`;
           heart.style.top = '0px';
           document.body.appendChild(heart);
 
           const fallInterval = setInterval(() => {
             heart.style.top = `${parseInt(heart.style.top) + 5}px`;
-            const spiderman = document.getElementById('spiderman').getBoundingClientRect();
-            const heartRect = heart.getBoundingClientRect();
-            if (heartRect.bottom >= window.innerHeight) {
-              heart.remove(); clearInterval(fallInterval);
-            }
-            if (
-              heartRect.right >= spiderman.left &&
-              heartRect.left <= spiderman.right &&
-              heartRect.bottom >= spiderman.top &&
-              heartRect.top <= spiderman.bottom
-            ) {
-              score++;
-              updateScore();
+            if (parseInt(heart.style.top) > window.innerHeight) {
               heart.remove(); clearInterval(fallInterval);
             }
           }, 30);
         }, 800);
       }
-      
-    let timer = 60;
+
       function createTimer() {
+        let time = 60;
         const timerInterval = setInterval(() => {
-          timer--;
-          document.getElementById('timer').innerText = `Time: ${timer}s`;
-          if (timer <= 0) {
+          time--;
+          document.getElementById('timer').innerText = `Time: ${time}s`;
+          if (time <= 0) {
             clearInterval(timerInterval);
             alert(`Game Over! Your Score: ${score}`);
           }
         }, 1000);
       }
-
-
-      function showGiftLetter() {
-        const overlay = document.createElement('div');
-        overlay.classList.add('gift-overlay');
-        overlay.innerHTML = `
-          <div class="gift-content">
-            <h2>💌 A Special Letter 💌</h2>
-            <p>N7ebek Mahdi,</p>
-            <p>You are my superhero. Happy Valentine's Day baby! 💖</p>
-            <button onclick="overlay.remove()">Close</button>
-          </div>
-        `;
-        document.body.appendChild(overlay);
-      }
-
-      createMobileControls();
-      createScoreCounter();
-      showHearts();
-      createTimer();
-      const music = document.getElementById('backgroundMusic');
-      document.body.addEventListener('click', () => music.play(), { once: true });
-      setTimeout(showGiftLetter, 60000);
     </script>
   </body>
 </html>
-
