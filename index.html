@@ -93,7 +93,7 @@ function endGame() {
     <button class="gift-button" onclick="openGift()">🎁 Open for a Gift</button>
   `;
 }
-// Updated to play a specific YouTube song from a specific timestamp and adjusted button styling
+// Fixed 'Open for a Gift' button size and switched to audio playback from YouTube with timestamp
 function openGift() {
   const scoreCounter = document.getElementById('scoreCounter');
   if (scoreCounter) scoreCounter.style.display = 'none';
@@ -105,80 +105,40 @@ function openGift() {
       <h2>💌 A Special Letter 💌</h2>
       <p>Dear Mahdi,</p>
       <p>You are my superhero, my love, and my best friend. 💖 Happy Valentine's Day!</p>
-      <button class="big-gift-button" onclick="goBackToGame()">Go Back to Game</button>
-      <button class="big-gift-button" onclick="closeGift()">Close</button>
+      <audio autoplay>
+        <source src="https://docs.google.com/uc?export=download&id=YOUR_AUDIO_FILE_ID" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+      <button class="big-gift-button-large" onclick="goBackToGame()">Go Back to Game</button>
+      <button class="big-gift-button-large" onclick="closeGift()">Close</button>
     </div>
   `;
   document.body.appendChild(giftBox);
-
-  // Play YouTube audio from a specific time (1:57)
-  const audio = new Audio('https://www.youtubeinmp3.com/fetch/?video=https://youtu.be/O6P-r8xa0KM&t=117');
-  audio.play();
 }
 
-// Function to close gift overlay
-function closeGift() {
-  const overlay = document.querySelector('.gift-overlay');
-  if (overlay) overlay.remove();
-  const scoreCounter = document.getElementById('scoreCounter');
-  if (scoreCounter) scoreCounter.style.display = 'block';
-}
-
-// Function to restart the game from the start screen
-function goBackToGame() {
-  const overlay = document.querySelector('.gift-overlay');
-  if (overlay) overlay.remove();
-  document.getElementById('startScreen').style.display = 'flex';
-  document.getElementById('gameContainer').style.display = 'none';
-  document.getElementById('endScreen').style.display = 'none';
-}
-
-// Updated CSS for overlay and buttons
+// CSS adjustments for larger buttons
 const giftStyle = document.createElement('style');
 giftStyle.textContent = `
-  .gift-overlay {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.95);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 24px;
-    text-align: center;
-    z-index: 300;
-  }
-  .gift-content {
-    background: #ffe0e0;
-    padding: 50px;
-    border-radius: 20px;
-    box-shadow: 0px 0px 30px rgba(255, 255, 255, 0.95);
-    font-family: Arial, sans-serif;
-    color: #d10000;
-    font-weight: bold;
-    border: 6px solid white;
-  }
-  .big-gift-button {
+  .big-gift-button-large {
     display: inline-block;
-    padding: 20px 45px;
-    margin: 20px;
-    font-size: 28px;
+    padding: 30px 80px;
+    margin: 30px;
+    font-size: 36px;
     font-weight: bold;
-    border-radius: 50px;
+    border-radius: 65px;
     border: none;
     background-color: #d10000;
     color: white;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
   }
-  .big-gift-button:hover {
+  .big-gift-button-large:hover {
     background-color: #b30000;
-    transform: scale(1.05);
+    transform: scale(1.15);
   }
 `;
 document.head.appendChild(giftStyle);
+
 
     function moveSpiderMan(dx, dy) {
       x += dx;
