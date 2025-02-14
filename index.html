@@ -1,26 +1,74 @@
-// Complete Spiderman Valentine's Game with Full Functional Code for All Steps
-// Each step includes the full implementation logic.
-
 <!DOCTYPE html>
 <html>
   <head>
     <title>Spider-Man Valentine's Adventure 💖</title>
     <style>
-      body { margin: 0; font-family: Arial, sans-serif; background: url('https://wallpapers.com/images/high/hello-kitty-spiderman-heart.jpg') no-repeat center/cover; height: 100vh; overflow: hidden; }
-      .mobile-controls { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; }
-      .control-btn { padding: 15px; font-size: 20px; background-color: #d10000; color: white; border-radius: 50%; cursor: pointer; }
-      .heart { position: absolute; width: 30px; height: 30px; background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center/cover; }
-      .gift-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); display: flex; align-items: center; justify-content: center; z-index: 1000; }
-      .gift-content { background-color: white; padding: 30px; border-radius: 20px; text-align: center; font-size: 18px; color: #333; }
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: url('https://wallpapers.com/images/high/hello-kitty-spiderman-heart.jpg') no-repeat center/cover;
+        height: 100vh;
+        overflow: hidden;
+      }
+      .mobile-controls {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 10px;
+      }
+      .control-btn {
+        padding: 15px;
+        font-size: 20px;
+        background-color: #d10000;
+        color: white;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+      .heart {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center/cover;
+      }
+      .gift-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+      .gift-content {
+        background-color: white;
+        padding: 30px;
+        border-radius: 20px;
+        text-align: center;
+        font-size: 18px;
+        color: #333;
+      }
     </style>
   </head>
   <body>
+    <audio id="backgroundMusic" loop autoplay>
+      <source src="https://docs.google.com/uc?export=download&id=1bX99FqFwEtuMAvWOp25c_L3B6D0URsjS" type="audio/mp3">
+    </audio>
     <div id="spiderman" style="position:absolute;width:80px;height:100px;background:url('https://pngimg.com/uploads/spider_man/spider_man_PNG63.png') no-repeat center/cover;"></div>
     <div id="scoreCounter">Score: 0</div>
     <div id="timer">Time: 60s</div>
 
     <script>
-      // STEP 1: MOBILE CONTROLS (with working buttons and movement)
+      function moveSpiderMan(dx, dy) {
+        const spiderman = document.getElementById('spiderman');
+        spiderman.style.left = (spiderman.offsetLeft + dx) + 'px';
+        spiderman.style.top = (spiderman.offsetTop + dy) + 'px';
+      }
+
       function createMobileControls() {
         const controls = document.createElement('div');
         controls.classList.add('mobile-controls');
@@ -32,15 +80,12 @@
         `;
         document.body.appendChild(controls);
       }
-      function moveSpiderMan(dx, dy) {
-        const spiderman = document.getElementById('spiderman');
-        spiderman.style.left = (spiderman.offsetLeft + dx) + 'px';
-        spiderman.style.top = (spiderman.offsetTop + dy) + 'px';
+
+      let score = 0;
+      function createScoreCounter() {
+        document.getElementById('scoreCounter').innerText = 'Score: 0';
       }
 
-      // STEP 2: HEART COLLECTION & SCORE (with real-time updates)
-      let score = 0;
-      function createScoreCounter() { document.getElementById('scoreCounter').innerText = 'Score: 0'; }
       function showHearts() {
         setInterval(() => {
           const heart = document.createElement('div');
@@ -51,13 +96,13 @@
           const fallInterval = setInterval(() => {
             heart.style.top = `${parseInt(heart.style.top) + 5}px`;
             if (parseInt(heart.style.top) > window.innerHeight) {
-              heart.remove(); clearInterval(fallInterval);
+              heart.remove();
+              clearInterval(fallInterval);
             }
           }, 30);
         }, 800);
       }
 
-      // STEP 3: TIMER (with countdown and end notification)
       let timer = 60;
       function createTimer() {
         const timerInterval = setInterval(() => {
@@ -70,15 +115,6 @@
         }, 1000);
       }
 
-      // STEP 4: BACKGROUND MUSIC (from Google Drive at specific time)
-      function playBackgroundMusic() {
-        const audio = new Audio('https://docs.google.com/uc?export=download&id=1bX99FqFwEtuMAvWOp25c_L3B6D0URsjS');
-        audio.currentTime = 118; // Starts from 1:58
-        audio.loop = true;
-        audio.play().catch(() => console.log('Autoplay blocked'));
-      }
-
-      // STEP 5: GIFT LETTER OVERLAY (displays a love letter)
       function showGiftLetter() {
         const overlay = document.createElement('div');
         overlay.classList.add('gift-overlay');
@@ -93,13 +129,12 @@
         document.body.appendChild(overlay);
       }
 
-      // INITIALIZE ALL STEPS
       createMobileControls();
       createScoreCounter();
       showHearts();
       createTimer();
-      playBackgroundMusic();
       setTimeout(showGiftLetter, 60000);
     </script>
   </body>
 </html>
+
