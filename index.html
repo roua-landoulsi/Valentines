@@ -14,30 +14,18 @@
         height: 100vh;
         overflow: hidden;
       }
-      .gift-overlay {
+      #scoreCounter, #timer {
+        font-size: 24px;
+        font-weight: bold;
+        color: white;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 10px;
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.8);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 20px;
-        flex-direction: column;
-        z-index: 100;
+        z-index: 50;
       }
-      .gift-content button {
-        padding: 10px 20px;
-        font-size: 18px;
-        background-color: #ff4c4c;
-        border: none;
-        border-radius: 20px;
-        color: white;
-        cursor: pointer;
-      }
+      #scoreCounter { top: 20px; left: 20px; }
+      #timer { top: 20px; right: 20px; }
     </style>
   </head>
   <body>
@@ -54,29 +42,18 @@
     <div id="timer">Time: 60s</div>
 
     <script>
+      let score = 0;
+      let time = 60;
+
       function startGame() {
         document.getElementById('startScreen').style.display = 'none';
         document.getElementById('backgroundMusic').play().catch(() => console.log('Music autoplay blocked'));
         showHearts();
+        updateScore();
         createTimer();
         setTimeout(showGiftLetter, 60000);
       }
 
-      function showGiftLetter() {
-        const overlay = document.createElement('div');
-        overlay.className = 'gift-overlay';
-        overlay.innerHTML = `
-          <div class="gift-content">
-            <h2>💌 A Special Letter 💌</h2>
-            <p>N7ebek Mahdi,</p>
-            <p>You are my superhero. Happy Valentine's Day baby! 💖</p>
-            <button onclick="overlay.remove()">Close</button>
-          </div>
-        `;
-        document.body.appendChild(overlay);
-      }
-
-      let score = 0;
       function updateScore() {
         document.getElementById('scoreCounter').innerText = `Score: ${score}`;
       }
@@ -85,6 +62,10 @@
         setInterval(() => {
           const heart = document.createElement('div');
           heart.className = 'heart';
+          heart.style.position = 'absolute';
+          heart.style.width = '30px';
+          heart.style.height = '30px';
+          heart.style.background = "url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center/cover";
           heart.style.left = `${Math.random() * window.innerWidth}px`;
           heart.style.top = '0px';
           document.body.appendChild(heart);
@@ -99,7 +80,6 @@
       }
 
       function createTimer() {
-        let time = 60;
         const timerInterval = setInterval(() => {
           time--;
           document.getElementById('timer').innerText = `Time: ${time}s`;
@@ -108,6 +88,30 @@
             alert(`Game Over! Your Score: ${score}`);
           }
         }, 1000);
+      }
+
+      function showGiftLetter() {
+        const overlay = document.createElement('div');
+        overlay.className = 'gift-overlay';
+        overlay.innerHTML = `
+          <div style="background:white;padding:20px;border-radius:15px;">
+            <h2>💌 A Special Letter 💌</h2>
+            <p>N7ebek Mahdi,</p>
+            <p>You are my superhero. Happy Valentine's Day baby! 💖</p>
+            <button onclick="overlay.remove()">Close</button>
+          </div>
+        `;
+        overlay.style.position = 'fixed';
+        overlay.style.top = '0';
+        overlay.style.left = '0';
+        overlay.style.width = '100%';
+        overlay.style.height = '100%';
+        overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+        overlay.style.display = 'flex';
+        overlay.style.alignItems = 'center';
+        overlay.style.justifyContent = 'center';
+        overlay.style.zIndex = '100';
+        document.body.appendChild(overlay);
       }
     </script>
   </body>
