@@ -1,109 +1,77 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Mahdi's Valentine's Game 💖</title>
+    <title>Mahdi's Valentine's Adventure 💖</title>
     <style>
       body {
         margin: 0;
         font-family: Arial, sans-serif;
-        background-color: #000;
-        background-image: url('https://wallpapers.com/images/high/hello-kitty-spiderman-heart.jpg');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
+        background-color: black;
+        color: white;
+        text-align: center;
         height: 100vh;
         overflow: hidden;
       }
-      #scoreCounter, #timer {
-        font-size: 20px;
-        font-weight: bold;
-        color: white;
-        padding: 10px;
-        background: rgba(0, 0, 0, 0.5);
-        border-radius: 10px;
-        position: fixed;
+      .screen {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
       }
-      #scoreCounter { top: 10px; left: 10px; }
-      #timer { top: 10px; right: 10px; }
+      button {
+        padding: 15px 30px;
+        font-size: 20px;
+        background-color: #ff4c4c;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        margin: 10px;
+      }
+      button:hover {
+        background-color: #d10000;
+      }
     </style>
   </head>
   <body>
-    <audio id="backgroundMusic" autoplay loop>
+    <audio id="backgroundMusic" loop>
       <source src="https://docs.google.com/uc?export=download&id=1bX99FqFwEtuMAvWOp25c_L3B6D0URsjS" type="audio/mp3">
     </audio>
 
-    <div id="scoreCounter">Score: 0</div>
-    <div id="timer">Time: 60s</div>
+    <div id="startScreen" class="screen">
+      <h1>💖 Happy Valentine's Mahdi 💖</h1>
+      <button onclick="startGame()">Start Game</button>
+    </div>
+
+    <div id="gameScreen" class="screen" style="display:none;">
+      <p>Help Spider-Man reach Hello Kitty!</p>
+      <button onclick="finishGame()">Finish Mission</button>
+    </div>
+
+    <div id="giftScreen" class="screen" style="display:none;">
+      <h2>💌 A Special Letter 💌</h2>
+      <p>N7ebek Mahdi,</p>
+      <p>You are my superhero. Happy Valentine's Day baby! 💖</p>
+      <button onclick="restartGame()">Play Again</button>
+    </div>
 
     <script>
-      let score = 0;
-      let time = 60;
-
-      function updateScore() {
-        document.getElementById('scoreCounter').innerText = `Score: ${score}`;
+      function startGame() {
+        document.getElementById('startScreen').style.display = 'none';
+        document.getElementById('gameScreen').style.display = 'flex';
+        document.getElementById('backgroundMusic').play().catch(() => console.log('Autoplay blocked'));
       }
 
-      function showHearts() {
-        setInterval(() => {
-          const heart = document.createElement('div');
-          heart.className = 'heart';
-          heart.style.position = 'absolute';
-          heart.style.width = '30px';
-          heart.style.height = '30px';
-          heart.style.background = "url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center/cover";
-          heart.style.left = `${Math.random() * window.innerWidth}px`;
-          heart.style.top = '0px';
-          document.body.appendChild(heart);
-
-          const fallInterval = setInterval(() => {
-            heart.style.top = `${parseInt(heart.style.top) + 5}px`;
-            if (parseInt(heart.style.top) > window.innerHeight) {
-              heart.remove(); clearInterval(fallInterval);
-            }
-          }, 30);
-        }, 800);
+      function finishGame() {
+        document.getElementById('gameScreen').style.display = 'none';
+        document.getElementById('giftScreen').style.display = 'flex';
       }
 
-      function createTimer() {
-        const timerInterval = setInterval(() => {
-          time--;
-          document.getElementById('timer').innerText = `Time: ${time}s`;
-          if (time <= 0) {
-            clearInterval(timerInterval);
-            alert(`Game Over! Your Score: ${score}`);
-            showGiftLetter();
-          }
-        }, 1000);
+      function restartGame() {
+        document.getElementById('giftScreen').style.display = 'none';
+        document.getElementById('startScreen').style.display = 'flex';
       }
-
-      function showGiftLetter() {
-        const overlay = document.createElement('div');
-        overlay.className = 'gift-overlay';
-        overlay.innerHTML = `
-          <div style="background:white;padding:20px;border-radius:15px;">
-            <h2>💌 A Special Letter 💌</h2>
-            <p>N7ebek Mahdi,</p>
-            <p>You are my superhero. Happy Valentine's Day baby! 💖</p>
-            <button onclick="overlay.remove()">Close</button>
-          </div>
-        `;
-        overlay.style.position = 'fixed';
-        overlay.style.top = '0';
-        overlay.style.left = '0';
-        overlay.style.width = '100%';
-        overlay.style.height = '100%';
-        overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-        overlay.style.display = 'flex';
-        overlay.style.alignItems = 'center';
-        overlay.style.justifyContent = 'center';
-        overlay.style.zIndex = '100';
-        document.body.appendChild(overlay);
-      }
-
-      // Start the game automatically when the page loads
-      updateScore();
-      showHearts();
-      createTimer();
     </script>
   </body>
 </html>
