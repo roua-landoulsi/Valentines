@@ -1,237 +1,110 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title> Mahdi Valentine's game </title>
+  <title>Mahdi's Valentine's game💖</title>
   <style>
-    body { margin: 5; padding: 5 ; font-family: Arial, sans-serif; background: url('https://wallpapers.com/images/high/hello-kitty-spiderman-heart-hnkzdcepdjizhvuw.webp') no-repeat center/cover; }
+    body { margin: 0; padding: 0; font-family: Arial, sans-serif; background: url('https://wallpapers.com/images/high/hello-kitty-spiderman-heart-hnkzdcepdjizhvuw.webp') no-repeat center/cover; overflow: hidden; }
 
     #startScreen, #endScreen {
       position: fixed; width: 100%; height: 100%; background: rgba(255, 182, 193, 0.95);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       font-size: 28px; font-weight: bold; z-index: 100;
     }
-    .start-button, .restart-button {
-      background-color: #d10000; color: white; font-size: 24px; font-weight: bold;
-      padding: 15px 40px; border-radius: 50px; cursor: pointer; transition: 0.3s;
+    
+    #scoreCounter, #timer {
+      position: absolute; font-size: 24px; font-weight: bold; color: #ff4d4d;
     }
-    .start-button:hover, .restart-button:hover { background-color: #b30000; }
-    #scoreCounter, #timer { position: absolute; font-size: 24px; font-weight: bold; color: #ff4d4d; }
     #scoreCounter { top: 10px; right: 10px; }
     #timer { top: 10px; left: 10px; }
+
     .heart {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      background: url('https://static.vecteezy.com/system/resources/previews/033/034/173/non_2x/pixel-heart-pixel-art-illustration-8-bit-heart-icon-red-heart-pixel-graphic-video-game-heart-icon-vector.jpg') no-repeat center/contain;
-      background-size: cover;
+      position: absolute; width: 30px; height: 30px;
+      background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center/contain;
+      animation: fall 3s linear;
     }
+    @keyframes fall { from { top: 0; } to { top: 100vh; } }
+
+    .controls { position: fixed; bottom: 20px; width: 100%; display: flex; justify-content: center; gap: 10px; }
+    .control-button { padding: 15px; font-size: 24px; background-color: #FF6347; color: white; border-radius: 50%; cursor: pointer; }
   </style>
 </head>
 <body>
-  <div id="startScreen">💖 Happy Valentine's Mahdi !! 💖<p style="font-size: 18px;">Click to Start Your Adventure!</p><button class="start-button" onclick="startGame()">Start Game</button></div>
-  
-  <div id="endScreen" style="display:none;">
-    <p>Your Score: <span id="finalScore"></span></p>
-    <button class="restart-button" onclick="location.reload()">🔄 Play Again</button>
+  <audio id="backgroundMusic" src="https://drive.google.com/uc?export=download&id=1bX99FqFwEtuMAvWOp25c_L3B6D0URsjS" autoplay loop></audio>
+
+  <div id="startScreen">
+    💖 Happy Valentine's Mahdi 💖
+    <p>Click to Start Your Adventure!</p>
+    <div class="button" onclick="startGame()">Start Game</div>
   </div>
 
-  <div id="gameContainer" style="display:none;">
+  <div id="gameContainer">
     <div id="scoreCounter">Score: 0</div>
     <div id="timer">Time: 60s</div>
-    <div id="spiderman" style="position:absolute;width:80px;height:100px;background:url('https://pngimg.com/uploads/spider_man/spider_man_PNG63.png') no-repeat center/contain;left:100px;top:350px;"></div>
+    <div id="spiderman"></div>
   </div>
-  
+
+  <div id="endScreen" style="display:none;">
+    <p>Your Score: <span id="finalScore"></span></p>
+    <p>💌 Dear Mahdi,<br>You are my superhero, my love, and my best friend 💖 Happy Valentine’s Day!</p>
+    <button onclick="restartGame()">🔄 Play Again</button>
+    <button onclick="closeGift()">Close</button>
+  </div>
+
+  <div class="controls">
+    <div class="control-button" onclick="moveLeft()">⬅️</div>
+    <div class="control-button" onclick="moveUp()">⬆️</div>
+    <div class="control-button" onclick="moveDown()">⬇️</div>
+    <div class="control-button" onclick="moveRight()">➡️</div>
+  </div>
+
   <script>
-    let time = 60, score = 0, x = 100, y = 350;
-
-   function createHeart() {
-  const heart = document.createElement('div');
-  heart.classList.add('heart');
-  heart.style.position = 'absolute';
-  heart.style.left = `${Math.random() * (window.innerWidth - 30)}px`;
-  heart.style.top = '0px';
-  document.body.appendChild(heart);
-
-  const fallInterval = setInterval(() => {
-    heart.style.top = `${parseInt(heart.style.top) + 5}px`;
-
-    // Check collision with Spider-Man
-    if (
-      Math.abs(x - parseInt(heart.style.left)) < 40 &&
-      Math.abs(y - parseInt(heart.style.top)) < 40
-    ) {
-      score++;
-      document.getElementById('scoreCounter').innerText = `Score: ${score}`;
-      heart.remove();
-      clearInterval(fallInterval);
-      return;
-    }
-
-    // Remove heart if it reaches bottom
-    if (parseInt(heart.style.top) > window.innerHeight) {
-      heart.remove();
-      clearInterval(fallInterval);
-    }
-  }, 20);
-}
-
-    function updateTimer() {
-      document.getElementById('timer').innerText = `Time: ${time}s`;
-      if (time <= 0) endGame();
-      time--;
-    }
-
-   // Corrected 'Open for a Gift' feature to show at the end of the game
-// Integrated buttons directly within endGame() for proper timing
-
-function endGame() {
-  document.getElementById('gameContainer').style.display = 'none';
-  document.getElementById('endScreen').style.display = 'flex';
-  document.getElementById('endScreen').innerHTML = `
-    <p>Your Score: <span id="finalScore">${score}</span></p>
-    <button class="restart-button" onclick="location.reload()">🔄 Play Again</button>
-    <button class="gift-button" onclick="openGift()">🎁 Open for a Gift</button>
-  `;
-}
-// Fixed overlay z-index, ensured song playback, and added Go Back buttons functionality
-function openGift() {
-  // Remove existing overlays
-  const existingOverlay = document.querySelector('.gift-overlay');
-  if (existingOverlay) existingOverlay.remove();
-
-  const scoreCounter = document.getElementById('scoreCounter');
-  if (scoreCounter) scoreCounter.style.display = 'none';
-
-  const giftBox = document.createElement('div');
-  giftBox.classList.add('gift-overlay');
-  giftBox.style.zIndex = '1000'; // Ensure overlay is on top
-  giftBox.innerHTML = `
-    <div class="gift-content">
-      <h1 class="large-gift-title">🎁 Open for a Gift 🎁</h1>
-      <h2>💌 A Special Letter 💌</h2>
-      <p>Dear Mahdi,</p>
-      <p>You are my superhero, my love, and my best friend. 💖 Happy Valentine's Day!</p>
-      <button class="fancy-large-button" onclick="goBackToGame()">Go Back to Game</button>
-      <button class="fancy-large-button" onclick="closeGift()">Close</button>
-    </div>
-  `;
-  document.body.appendChild(giftBox);
-
-  // Play song with error handling
-  const audio = new Audio('https://docs.google.com/uc?export=download&id=1bX99FqFwEtuMAvWOp25c_L3B6D0URsjS');
-  audio.addEventListener('canplay', () => {
-    audio.currentTime = 118; // Start from 1:58
-    audio.play().catch(e => console.error('Audio failed to play:', e));
-  });
-  audio.loop = true;
-  audio.volume = 0.7;
-
-  // Add Go Back to Game Functionality
-  window.goBackToGame = function() {
-    document.querySelector('.gift-overlay')?.remove();
-    document.getElementById('startScreen').style.display = 'flex';
-    document.getElementById('gameContainer').style.display = 'none';
-    document.getElementById('endScreen').style.display = 'none';
-  };
-
-  window.closeGift = function() {
-    document.querySelector('.gift-overlay')?.remove();
-    if (scoreCounter) scoreCounter.style.display = 'block';
-  };
-
-  // Ensure overlay covers everything properly
-  const overlayStyle = document.createElement('style');
-  overlayStyle.textContent = `
-    .gift-overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background-color: rgba(0, 0, 0, 0.85);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-    }
-    .fancy-large-button {
-      padding: 20px 70px;
-      font-size: 32px;
-      font-weight: bold;
-      color: white;
-      background: linear-gradient(135deg, #ff4d4d, #ff9999);
-      border-radius: 45px;
-      margin: 20px;
-      transition: transform 0.2s;
-    }
-    .fancy-large-button:hover {
-      transform: scale(1.12);
-    }
-  `;
-  document.head.appendChild(overlayStyle);
-}
-
-    function moveSpiderMan(dx, dy) {
-      x += dx;
-      y += dy;
-      const spiderman = document.getElementById('spiderman');
-      spiderman.style.left = `${x}px`;
-      spiderman.style.top = `${y}px`;
-    }
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') moveSpiderMan(-20, 0);
-      if (e.key === 'ArrowRight') moveSpiderMan(20, 0);
-      if (e.key === 'ArrowUp') moveSpiderMan(0, -20);
-      if (e.key === 'ArrowDown') moveSpiderMan(0, 20);
-    });
+    let time = 60;
+    let score = 0;
+    let x = 100, y = 350;
+    let timerInterval;
 
     function startGame() {
       document.getElementById('startScreen').style.display = 'none';
-      document.getElementById('gameContainer').style.display = 'block';
-      setInterval(updateTimer, 1000);
+      document.getElementById('backgroundMusic').currentTime = 118;
+      document.getElementById('backgroundMusic').play();
+      updateTimer();
+      timerInterval = setInterval(updateTimer, 1000);
       setInterval(createHeart, 800);
     }
-    
-// Corrected mobile controls implementation for Spider-Man movement
-// Add on-screen mobile controls with proper event listeners and styling
 
-document.body.insertAdjacentHTML('beforeend', `
-  <div class="controls">
-    <button class="control-btn" onclick="moveSpiderMan(-20, 0)">⬅️</button>
-    <button class="control-btn" onclick="moveSpiderMan(20, 0)">➡️</button>
-    <button class="control-btn" onclick="moveSpiderMan(0, -20)">⬆️</button>
-    <button class="control-btn" onclick="moveSpiderMan(0, 20)">⬇️</button>
-  </div>
-`);
+    function createHeart() {
+      let heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.style.left = Math.random() * window.innerWidth + 'px';
+      document.body.appendChild(heart);
+      heart.addEventListener('animationend', () => heart.remove());
+    }
 
-// Add CSS styles for mobile controls
-const mobileControlsStyle = document.createElement('style');
-mobileControlsStyle.textContent = `
-  .controls {
-    position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 15px;
-    z-index: 100;
-  }
-  .control-btn {
-    padding: 12px 18px;
-    font-size: 24px;
-    font-weight: bold;
-    border-radius: 50%;
-    border: 2px solid white;
-    background-color: #d10000;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  .control-btn:hover {
-    background-color: #b30000;
-  }
-`;
-document.head.appendChild(mobileControlsStyle);
-</script>
+    function updateTimer() {
+      time--;
+      document.getElementById('timer').innerText = `Time: ${time}s`;
+      if (time <= 0) endGame();
+    }
+
+    function endGame() {
+      clearInterval(timerInterval);
+      document.getElementById('finalScore').innerText = score;
+      document.getElementById('endScreen').style.display = 'flex';
+    }
+
+    function restartGame() { window.location.reload(); }
+    function closeGift() { document.getElementById('endScreen').style.display = 'none'; }
+
+    function moveLeft() { x -= 20; updatePosition(); }
+    function moveRight() { x += 20; updatePosition(); }
+    function moveUp() { y -= 20; updatePosition(); }
+    function moveDown() { y += 20; updatePosition(); }
+
+    function updatePosition() {
+      const spiderman = document.getElementById('spiderman');
+      spiderman.style.left = x + 'px';
+      spiderman.style.top = y + 'px';
+    }
+  </script>
 </body>
 </html>
