@@ -18,14 +18,14 @@
       left: 750px; bottom: 150px; display: none;
     }
     
-    .obstacle {
-      position: absolute; width: 50px; height: 50px; background-color: red;
-      animation: moveObstacle 4s linear infinite;
+    .heart {
+      position: absolute; width: 30px; height: 30px; background-color: pink;
+      border-radius: 50%; animation: fall 5s linear infinite;
     }
 
-    @keyframes moveObstacle {
-      from { left: 100%; }
-      to { left: -50px; }
+    @keyframes fall {
+      from { top: 0; }
+      to { top: 100vh; }
     }
 
     #winMessage {
@@ -46,9 +46,20 @@
     let helloKitty = document.getElementById('helloKitty');
     let winMessage = document.getElementById('winMessage');
     let x = 50, y = 350, speed = 20;
+    let score = 0;
+
+    function createHeart() {
+      let heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.style.left = Math.random() * window.innerWidth + 'px';
+      document.body.appendChild(heart);
+      setTimeout(() => { heart.remove(); }, 5000);
+    }
+
+    setInterval(createHeart, 1000);
 
     function checkWin() {
-      if (x > 700) {
+      if (x > 700 && score >= 5) {
         helloKitty.style.display = 'block';
         winMessage.style.display = 'block';
       }
