@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>💖 Heart Collector Challenge 💖</title>
+    <title>💖 Heart Rain Challenge 💖</title>
     <style>
       body {
         margin: 0;
@@ -12,11 +12,11 @@
         position: relative;
       }
       .title {
-        font-size: 36px;
+        font-size: 32px;
         font-weight: bold;
         color: #fff;
         text-align: center;
-        padding: 20px;
+        padding: 10px;
       }
       .heart {
         position: absolute;
@@ -24,31 +24,39 @@
         height: 50px;
         background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center/cover;
       }
-      .scoreboard {
+      .scoreboard, .timer {
         position: fixed;
+        font-size: 22px;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 8px 16px;
+        border-radius: 10px;
+      }
+      .scoreboard {
         top: 20px;
         right: 20px;
-        font-size: 24px;
-        color: white;
-        background-color: rgba(0, 0, 0, 0.6);
-        padding: 10px 20px;
-        border-radius: 12px;
+      }
+      .timer {
+        top: 20px;
+        left: 20px;
       }
     </style>
   </head>
   <body>
-    <div class="title">💖 Tap Hearts to Collect! 1 Minute Challenge! ⏳</div>
+    <div class="title">💖 Catch the Falling Hearts! 1 Minute Challenge ⏳</div>
+    <div id="timer" class="timer">Time: 60s</div>
     <div id="score" class="scoreboard">Score: 0</div>
 
     <script>
       let score = 0;
       let gameActive = true;
+      let timeRemaining = 60;
 
-      function createHeart(x, y) {
+      function dropHeart() {
         const heart = document.createElement('div');
         heart.className = 'heart';
-        heart.style.left = `${x - 25}px`;
-        heart.style.top = `${y - 25}px`;
+        heart.style.left = `${Math.random() * window.innerWidth}px`;
+        heart.style.top = '-50px';
         document.body.appendChild(heart);
 
         heart.addEventListener('click', () => {
@@ -59,24 +67,38 @@
           }
         });
 
-        setTimeout(() => heart.remove(), 2000);
+        let fallInterval = setInterval(() => {
+          heart.style.top = `${heart.offsetTop + 5}px`;
+          if (heart.offsetTop > window.innerHeight) {
+            heart.remove();
+            clearInterval(fallInterval);
+          }
+        }, 30);
       }
 
       function updateScore() {
         document.getElementById('score').innerText = `Score: ${score}`;
       }
 
-      document.body.addEventListener('click', (e) => {
-        if (gameActive) {
-          createHeart(e.clientX, e.clientY);
-        }
-      });
+      function updateTimer() {
+        document.getElementById('timer').innerText = `Time: ${timeRemaining}s`;
+      }
 
-      setTimeout(() => {
-        gameActive = false;
-        alert(`Time's up! Your final score: ${score} 💖`);
-      }, 60000);
+      const heartRain = setInterval(() => {
+        if (gameActive) dropHeart();
+      }, 500);
+
+      const countdown = setInterval(() => {
+        if (timeRemaining > 0) {
+          timeRemaining--;
+          updateTimer();
+        } else {
+          clearInterval(countdown);
+          clearInterval(heartRain);
+          gameActive = false;
+          alert(`Time's up! Your final score: ${score} 💖`);
+        }
+      }, 1000);
     </script>
   </body>
 </html>
-
