@@ -24,11 +24,10 @@
   </div>
   <script>
     let time = 60, score = 0, x = 100, y = 350, hearts = [], timerInterval;
-    function createHeart() { hearts.push({ x: Math.random() * window.innerWidth, y: 0, speed: 3 }); }
-    function updateTimer() {
-      document.getElementById('timer').innerText = `Time: ${time}s`;
-      if (time <= 0) endGame();
-      time--;
+    const spiderman = document.getElementById('spiderman');
+    
+    function createHeart() {
+      hearts.push({ x: Math.random() * window.innerWidth, y: 0, speed: 3 });
     }
     function drawHearts() {
       hearts.forEach(heart => {
@@ -56,6 +55,11 @@
         }
       });
     }
+    function updateTimer() {
+      document.getElementById('timer').innerText = `Time: ${time}s`;
+      if (time <= 0) endGame();
+      time--;
+    }
     function endGame() {
       clearInterval(timerInterval);
       document.getElementById('gameContainer').style.display = 'none';
@@ -68,11 +72,24 @@
       setInterval(createHeart, 800);
       gameLoop();
     }
+    function moveSpiderMan(dx, dy) {
+      x += dx;
+      y += dy;
+      spiderman.style.left = `${x}px`;
+      spiderman.style.top = `${y}px`;
+    }
     function gameLoop() {
       drawHearts();
       moveHearts();
       requestAnimationFrame(gameLoop);
     }
+    
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') moveSpiderMan(-20, 0);
+      if (e.key === 'ArrowRight') moveSpiderMan(20, 0);
+      if (e.key === 'ArrowUp') moveSpiderMan(0, -20);
+      if (e.key === 'ArrowDown') moveSpiderMan(0, 20);
+    });
   </script>
 </body>
 </html>
