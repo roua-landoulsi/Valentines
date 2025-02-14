@@ -29,7 +29,7 @@
       position: absolute; width: 100px; height: 120px;
       background: url('https://pngimg.com/uploads/spider_man/spider_man_PNG63.png') no-repeat center/contain;
       background-size: cover;
-      left: 100px; top: 350px; z-index: 150; display: block;
+      left: 100px; top: 350px; z-index: 50; display: none;
     }
 
     #helloKitty {
@@ -63,6 +63,8 @@
     function startGame() {
       document.getElementById('startScreen').style.display = 'none';
       spiderman.style.display = 'block';
+      spiderman.style.left = x + 'px';
+      spiderman.style.top = y + 'px';
     }
 
     document.addEventListener('keydown', function(event) {
@@ -71,13 +73,15 @@
       if (event.key === 'ArrowUp') y -= speed;
       if (event.key === 'ArrowDown') y += speed;
 
+      if (x < 0) x = 0;
+      if (y < 0) y = 0;
+      if (x > 1480) x = 1480;
+      if (y > 500) y = 500;
+
       spiderman.style.left = x + 'px';
       spiderman.style.top = y + 'px';
     });
   </script>
 </body>
 </html>
-
-
-
 
