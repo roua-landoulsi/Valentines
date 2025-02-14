@@ -5,39 +5,50 @@
   <style>
     body { margin: 0; padding: 0; overflow-x: scroll; font-family: Arial, sans-serif; background-color: #87CEEB; }
 
-    #startScreen, #gameOverScreen, #winScreen {
+    #startScreen {
       position: fixed; width: 100%; height: 100%; background: rgba(255, 182, 193, 0.95);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      font-size: 24px; font-weight: bold;
+      font-size: 24px; font-weight: bold; z-index: 100;
     }
 
     .button { background-color: #ff4d4d; color: white; font-size: 24px; padding: 10px 30px;
               border-radius: 10px; cursor: pointer; margin-top: 20px; }
 
     #gameContainer {
-      position: relative; width: 600vw; height: 100vh; overflow-x: scroll;
+      position: relative; width: 800vw; height: 100vh;
       background: url('https://wallpapers.com/images/high/hello-kitty-spiderman-heart-hnkzdcepdjizhvuw.webp') repeat-x;
+      overflow-x: scroll;
     }
 
-    .platform { position: absolute; width: 150px; height: 20px; background-color: #8B4513; border-radius: 5px; }
-    .enemy { position: absolute; width: 60px; height: 60px; background-color: red; animation: moveEnemy 5s linear infinite; }
-    .heart { position: absolute; width: 30px; height: 30px; background-color: pink; border-radius: 50%; }
+    .platform {
+      position: absolute; width: 120px; height: 20px; background-color: #8B4513;
+      border-radius: 5px; border: 2px solid #5C3D2E;
+    }
+
+    .enemy {
+      position: absolute; width: 60px; height: 60px; background-color: red;
+      animation: moveEnemy 4s linear infinite;
+    }
 
     @keyframes moveEnemy {
-      0% { transform: translateX(100vw); }
-      100% { transform: translateX(-100vw); }
+      0% { transform: translateX(500px); }
+      100% { transform: translateX(-500px); }
     }
+
+    .heart { position: absolute; width: 30px; height: 30px; background-color: pink; border-radius: 50%; }
 
     #spiderman, #helloKitty {
-      position: absolute; width: 80px; height: 100px;
-      background-size: cover; display: block;
+      position: absolute; width: 80px; height: 100px; background-size: cover; display: block;
     }
 
-    #spiderman { left: 50px; top: 350px;
-      background: url('https://images-wixmp-ed30a86b8c4ca887773594c2.png') no-repeat center/contain; }
+    #spiderman {
+      background: url('https://images-wixmp-ed30a86b8c4ca887773594c2.png') no-repeat center/contain;
+      left: 50px; top: 350px;
+    }
+
     #helloKitty {
-      left: 570vw; bottom: 100px;
       background: url('https://www.citypng.com/public/uploads/preview/sweet-hello-kitty-ballet-dancer-transparent-background-7358116966750470e7ptokdz9.png') no-repeat center/contain;
+      left: 780vw; bottom: 150px;
     }
   </style>
 </head>
@@ -50,31 +61,22 @@
   <div id="gameContainer">
     <div id="spiderman"></div>
     <div id="helloKitty"></div>
-    <div class="platform" style="left: 200px; bottom: 250px;"></div>
-    <div class="platform" style="left: 600px; bottom: 300px;"></div>
+    <div class="platform" style="left: 150px; bottom: 250px;"></div>
+    <div class="platform" style="left: 300px; bottom: 300px;"></div>
+    <div class="platform" style="left: 500px; bottom: 250px;"></div>
+    <div class="platform" style="left: 700px; bottom: 200px;"></div>
     <div class="platform" style="left: 1000px; bottom: 250px;"></div>
-    <div class="enemy" style="left: 800px; bottom: 100px;"></div>
-    <div class="heart" style="left: 500px; bottom: 280px;"></div>
-  </div>
-
-  <div id="gameOverScreen" style="display:none;">
-    Game Over 💔
-    <div class="button" onclick="retryGame()">Retry</div>
-  </div>
-
-  <div id="winScreen" style="display:none;">
-    🎉 You Found Hello Kitty! 💖 They jump together happily!
-    <div class="button" onclick="restartGame()">Play Again</div>
+    <div class="enemy" style="left: 450px; bottom: 100px;"></div>
+    <div class="heart" style="left: 350px; bottom: 320px;"></div>
+    <div class="heart" style="left: 750px; bottom: 220px;"></div>
   </div>
 
   <script>
     function startGame() {
       document.getElementById('startScreen').style.display = 'none';
       document.getElementById('spiderman').style.display = 'block';
-      document.getElementById('helloKitty').style.display = 'block';
     }
   </script>
 </body>
 </html>
 
-  
