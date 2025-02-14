@@ -23,6 +23,7 @@
         width: 50px;
         height: 50px;
         background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center/cover;
+        pointer-events: auto;
       }
       .scoreboard, .timer {
         position: fixed;
@@ -55,25 +56,25 @@
       function dropHeart() {
         const heart = document.createElement('div');
         heart.className = 'heart';
-        heart.style.left = `${Math.random() * window.innerWidth}px`;
-        heart.style.top = '-50px';
+        heart.style.left = `${Math.random() * (window.innerWidth - 60)}px`;
+        heart.style.top = '-60px';
         document.body.appendChild(heart);
 
-        heart.addEventListener('click', () => {
+        heart.onclick = () => {
           if (gameActive) {
             score++;
             updateScore();
             heart.remove();
           }
-        });
+        };
 
         let fallInterval = setInterval(() => {
-          heart.style.top = `${heart.offsetTop + 5}px`;
+          heart.style.top = `${heart.offsetTop + 4}px`;
           if (heart.offsetTop > window.innerHeight) {
             heart.remove();
             clearInterval(fallInterval);
           }
-        }, 30);
+        }, 20);
       }
 
       function updateScore() {
@@ -86,7 +87,7 @@
 
       const heartRain = setInterval(() => {
         if (gameActive) dropHeart();
-      }, 500);
+      }, 400);
 
       const countdown = setInterval(() => {
         if (timeRemaining > 0) {
