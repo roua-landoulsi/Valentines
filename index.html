@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Spider-Man Valentine's Adventure 💖</title>
+    <title> Mahdi's Valentine's game 💖</title>
     <style>
       body {
         margin: 0;
@@ -9,7 +9,19 @@
         background: url('https://wallpapers.com/images/high/hello-kitty-spiderman-heart.jpg') no-repeat center/cover;
         height: 100vh;
         overflow: hidden;
+        position: relative;
       }
+      #scoreCounter, #timer {
+        font-size: 20px;
+        font-weight: bold;
+        color: white;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 10px;
+        position: fixed;
+      }
+      #scoreCounter { top: 10px; left: 10px; }
+      #timer { top: 10px; right: 10px; }
       .mobile-controls {
         position: fixed;
         bottom: 20px;
@@ -32,44 +44,30 @@
         height: 30px;
         background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center/cover;
       }
-      .gift-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.8);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-      }
-      .gift-content {
-        background-color: white;
-        padding: 30px;
-        border-radius: 20px;
-        text-align: center;
-        font-size: 18px;
-        color: #333;
-      }
     </style>
   </head>
   <body>
-    <audio id="backgroundMusic" loop autoplay>
+    <audio id="backgroundMusic" autoplay loop>
       <source src="https://docs.google.com/uc?export=download&id=1bX99FqFwEtuMAvWOp25c_L3B6D0URsjS" type="audio/mp3">
     </audio>
+
+    <div id="startScreen" class="start-screen">
+      <h1>💖 Happy Valentine's Mahdi 💖</h1>
+      <button class="start-button" onclick="startGame()">Start Game</button>
+    </div>
+
     <div id="spiderman" style="position:absolute;width:80px;height:100px;background:url('https://pngimg.com/uploads/spider_man/spider_man_PNG63.png') no-repeat center/cover;"></div>
     <div id="scoreCounter">Score: 0</div>
     <div id="timer">Time: 60s</div>
 
-    <script>
-      function moveSpiderMan(dx, dy) {
-        const spiderman = document.getElementById('spiderman');
-        spiderman.style.left = (spiderman.offsetLeft + dx) + 'px';
-        spiderman.style.top = (spiderman.offsetTop + dy) + 'px';
-      }
 
-      function createMobileControls() {
+    <script>
+
+      function startGame() {
+        document.getElementById('startScreen').style.display = 'none';
+        document.getElementById('backgroundMusic').play().catch(() => console.log('Autoplay blocked'));
+        
+     function createMobileControls() {
         const controls = document.createElement('div');
         controls.classList.add('mobile-controls');
         controls.innerHTML = `
@@ -82,10 +80,10 @@
       }
 
       let score = 0;
-      function createScoreCounter() {
-        document.getElementById('scoreCounter').innerText = 'Score: 0';
+      function updateScore() {
+        document.getElementById('scoreCounter').innerText = `Score: ${score}`;
       }
-
+      
       function showHearts() {
         setInterval(() => {
           const heart = document.createElement('div');
@@ -93,17 +91,29 @@
           heart.style.left = `${Math.random() * window.innerWidth}px`;
           heart.style.top = '0px';
           document.body.appendChild(heart);
+
           const fallInterval = setInterval(() => {
             heart.style.top = `${parseInt(heart.style.top) + 5}px`;
-            if (parseInt(heart.style.top) > window.innerHeight) {
-              heart.remove();
-              clearInterval(fallInterval);
+            const spiderman = document.getElementById('spiderman').getBoundingClientRect();
+            const heartRect = heart.getBoundingClientRect();
+            if (heartRect.bottom >= window.innerHeight) {
+              heart.remove(); clearInterval(fallInterval);
+            }
+            if (
+              heartRect.right >= spiderman.left &&
+              heartRect.left <= spiderman.right &&
+              heartRect.bottom >= spiderman.top &&
+              heartRect.top <= spiderman.bottom
+            ) {
+              score++;
+              updateScore();
+              heart.remove(); clearInterval(fallInterval);
             }
           }, 30);
         }, 800);
       }
-
-      let timer = 60;
+      
+    let timer = 60;
       function createTimer() {
         const timerInterval = setInterval(() => {
           timer--;
@@ -115,14 +125,15 @@
         }, 1000);
       }
 
+
       function showGiftLetter() {
         const overlay = document.createElement('div');
         overlay.classList.add('gift-overlay');
         overlay.innerHTML = `
           <div class="gift-content">
             <h2>💌 A Special Letter 💌</h2>
-            <p>Dear Mahdi,</p>
-            <p>You are my superhero. Happy Valentine's Day! 💖</p>
+            <p>N7ebek Mahdi,</p>
+            <p>You are my superhero. Happy Valentine's Day baby! 💖</p>
             <button onclick="overlay.remove()">Close</button>
           </div>
         `;
@@ -133,6 +144,8 @@
       createScoreCounter();
       showHearts();
       createTimer();
+      const music = document.getElementById('backgroundMusic');
+      document.body.addEventListener('click', () => music.play(), { once: true });
       setTimeout(showGiftLetter, 60000);
     </script>
   </body>
