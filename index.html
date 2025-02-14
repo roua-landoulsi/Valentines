@@ -93,14 +93,11 @@ function endGame() {
     <button class="gift-button" onclick="openGift()">🎁 Open for a Gift</button>
   `;
 }
-
-// Fixed 'Open for a Gift' to display the letter and play the song
+// Improved 'Open for a Gift' overlay with 'Go Back to Game' button
 function openGift() {
-  // Remove any existing gift overlays before adding a new one
-  const existingGift = document.querySelector('.gift-overlay');
-  if (existingGift) existingGift.remove();
+  const scoreCounter = document.getElementById('scoreCounter');
+  if (scoreCounter) scoreCounter.style.display = 'none';
 
-  // Create and display the letter overlay
   const giftBox = document.createElement('div');
   giftBox.classList.add('gift-overlay');
   giftBox.innerHTML = `
@@ -108,52 +105,78 @@ function openGift() {
       <h2>💌 A Special Letter 💌</h2>
       <p>Dear Mahdi,</p>
       <p>You are my superhero, my love, and my best friend. 💖 Happy Valentine's Day!</p>
-      <button onclick="this.parentElement.parentElement.remove()">Close</button>
+      <button onclick="goBackToGame()">Go Back to Game</button>
+      <button onclick="closeGift()">Close</button>
     </div>
   `;
   document.body.appendChild(giftBox);
 
-  // Play the romantic song
   const audio = new Audio('https://www.bensound.com/bensound-music/bensound-romantic.mp3');
   audio.play();
 }
 
-// Ensure CSS is applied for gift overlay
+// Function to close gift overlay
+function closeGift() {
+  const overlay = document.querySelector('.gift-overlay');
+  if (overlay) overlay.remove();
+  const scoreCounter = document.getElementById('scoreCounter');
+  if (scoreCounter) scoreCounter.style.display = 'block';
+}
+
+// Function to restart the game from the start screen
+function goBackToGame() {
+  const overlay = document.querySelector('.gift-overlay');
+  if (overlay) overlay.remove();
+  document.getElementById('startScreen').style.display = 'flex';
+  document.getElementById('gameContainer').style.display = 'none';
+  document.getElementById('endScreen').style.display = 'none';
+}
+
+// Updated CSS for overlay and buttons
 const giftStyle = document.createElement('style');
 giftStyle.textContent = `
   .gift-overlay {
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.95);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 22px;
+    font-size: 24px;
     text-align: center;
-    z-index: 200;
+    z-index: 300;
   }
   .gift-content {
-    background: pink;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.7);
+    background: #ffe0e0;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 30px rgba(255, 255, 255, 0.95);
     font-family: Arial, sans-serif;
+    color: #d10000;
+    font-weight: bold;
+    border: 6px solid white;
   }
   .gift-content button {
-    margin-top: 15px;
-    padding: 10px 20px;
-    font-size: 18px;
-    border-radius: 10px;
+    margin: 15px;
+    padding: 14px 28px;
+    font-size: 22px;
+    border-radius: 12px;
     border: none;
     background-color: #d10000;
     color: white;
+    font-weight: bold;
     cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .gift-content button:hover {
+    background-color: #b30000;
   }
 `;
 document.head.appendChild(giftStyle);
+
 
     function moveSpiderMan(dx, dy) {
       x += dx;
