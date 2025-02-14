@@ -3,13 +3,45 @@
   <head>
     <title> Mahdi's Valentine's game 💖</title>
     <style>
-      body {
+       body {
         margin: 0;
         font-family: Arial, sans-serif;
-        background: url('https://wallpapers.com/images/high/hello-kitty-spiderman-heart.jpg') no-repeat center/cover;
+        background-color: #000;
+        background-image: url('https://wallpapers.com/images/high/hello-kitty-spiderman-heart.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
         height: 100vh;
         overflow: hidden;
         position: relative;
+      }
+      .start-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.85);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        z-index: 100;
+      }
+      .start-button {
+        padding: 20px 50px;
+        font-size: 28px;
+        font-weight: bold;
+        color: white;
+        background-color: #ff4c4c;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .start-button:hover {
+        background-color: #cc0000;
       }
       #scoreCounter, #timer {
         font-size: 20px;
@@ -51,21 +83,25 @@
       <source src="https://docs.google.com/uc?export=download&id=1bX99FqFwEtuMAvWOp25c_L3B6D0URsjS" type="audio/mp3">
     </audio>
 
+  
     <div id="startScreen" class="start-screen">
-      <h1>💖 Happy Valentine's Mahdi 💖</h1>
+      <h1>💖 Happy Valentine's Mahdi  💖</h1>
       <button class="start-button" onclick="startGame()">Start Game</button>
     </div>
 
-    <div id="spiderman" style="position:absolute;width:80px;height:100px;background:url('https://pngimg.com/uploads/spider_man/spider_man_PNG63.png') no-repeat center/cover;"></div>
-    <div id="scoreCounter">Score: 0</div>
-    <div id="timer">Time: 60s</div>
+    <div id="spiderman" style="position:absolute;width:80px;height:100px;background:url('https://pngimg.com/uploads/spider_man/spider_man_PNG63.png') no-repeat center/cover;display:none;"></div>
+    <div id="scoreCounter" style="display:none;">Score: 0</div>
+    <div id="timer" style="display:none;">Time: 60s</div>
 
 
     <script>
 
-      function startGame() {
+     function startGame() {
         document.getElementById('startScreen').style.display = 'none';
-        document.getElementById('backgroundMusic').play().catch(() => console.log('Autoplay blocked'));
+        document.getElementById('backgroundMusic').play().catch(() => console.log('Music autoplay blocked'));
+        document.getElementById('spiderman').style.display = 'block';
+        document.getElementById('scoreCounter').style.display = 'block';
+        document.getElementById('timer').style.display = 'block';
         
      function createMobileControls() {
         const controls = document.createElement('div');
