@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Spider-Man Valentine's Adventure 💖</title>
+<title> Mahdi Valentine's game </title>
   <style>
-    body { margin: 0; padding: 0; font-family: Arial, sans-serif; background: url('https://wallpapers.com/images/high/hello-kitty-spiderman-heart-hnkzdcepdjizhvuw.webp') no-repeat center/cover; }
+    body { margin: 5; padding: 0; font-family: Arial, sans-serif; background: url('https://wallpapers.com/images/high/hello-kitty-spiderman-heart-hnkzdcepdjizhvuw.webp') no-repeat center/cover; }
 
     #startScreen, #endScreen {
       position: fixed; width: 100%; height: 100%; background: rgba(255, 182, 193, 0.95);
@@ -108,38 +108,47 @@
       setInterval(updateTimer, 1000);
       setInterval(createHeart, 800);
     }
-// Add on-screen mobile controls
+    
+// Corrected mobile controls implementation for Spider-Man movement
+// Add on-screen mobile controls with proper event listeners and styling
+
 document.body.insertAdjacentHTML('beforeend', `
   <div class="controls">
-    <button onclick="moveSpiderMan(-20, 0)">⬅️</button>
-    <button onclick="moveSpiderMan(20, 0)">➡️</button>
-    <button onclick="moveSpiderMan(0, -20)">⬆️</button>
-    <button onclick="moveSpiderMan(0, 20)">⬇️</button>
+    <button class="control-btn" onclick="moveSpiderMan(-20, 0)">⬅️</button>
+    <button class="control-btn" onclick="moveSpiderMan(20, 0)">➡️</button>
+    <button class="control-btn" onclick="moveSpiderMan(0, -20)">⬆️</button>
+    <button class="control-btn" onclick="moveSpiderMan(0, 20)">⬇️</button>
   </div>
 `);
 
-// Style mobile controls
-const style = document.createElement('style');
-style.textContent = `
+// Add CSS styles for mobile controls
+const mobileControlsStyle = document.createElement('style');
+mobileControlsStyle.textContent = `
   .controls {
     position: fixed;
-    bottom: 20px;
+    bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 10px;
+    gap: 15px;
+    z-index: 100;
   }
-  button {
-    padding: 10px 15px;
-    font-size: 20px;
+  .control-btn {
+    padding: 12px 18px;
+    font-size: 24px;
+    font-weight: bold;
     border-radius: 50%;
-    border: none;
+    border: 2px solid white;
     background-color: #d10000;
     color: white;
     cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .control-btn:hover {
+    background-color: #b30000;
   }
 `;
-document.head.appendChild(style);
-  </script>
+document.head.appendChild(mobileControlsStyle);
+</script>
 </body>
 </html>
