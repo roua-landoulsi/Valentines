@@ -13,6 +13,19 @@
 
     #scoreCounter { position: absolute; top: 10px; right: 10px; font-size: 24px; color: #ff4d4d; font-weight: bold; }
     #timer { position: absolute; top: 10px; left: 10px; font-size: 24px; color: #ff4d4d; font-weight: bold; }
+
+    #spiderman {
+      position: absolute; width: 80px; height: 100px;
+      background: url('https://pngimg.com/uploads/spider_man/spider_man_PNG63.png') no-repeat center/contain;
+      left: 100px; top: 350px; display: block;
+    }
+
+    .heart {
+      position: absolute; width: 30px; height: 30px;
+      background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center/contain;
+      animation: fall 4s linear;
+    }
+    @keyframes fall { from { top: 0; } to { top: 100vh; } }
   </style>
 </head>
 <body>
@@ -25,16 +38,20 @@
   <div id="gameContainer">
     <div id="scoreCounter">Score: 0</div>
     <div id="timer">Time: 60s</div>
+    <div id="spiderman"></div>
   </div>
 
   <script>
     let time = 60;
+    let score = 0;
     let timerInterval;
+    let x = 100, y = 350;
 
     function startGame() {
       document.getElementById('startScreen').style.display = 'none';
       updateTimer();
       timerInterval = setInterval(updateTimer, 1000);
+      setInterval(createHeart, 1000);
     }
 
     function updateTimer() {
@@ -45,7 +62,31 @@
         alert(`Time's up! Your score: ${score}`);
       }
     }
+
+    function createHeart() {
+      let heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.style.left = Math.random() * window.innerWidth + 'px';
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 4000);
+    }
+
+    function moveLeft() { x -= 20; updatePosition(); }
+    function moveRight() { x += 20; updatePosition(); }
+    function moveUp() { y -= 20; updatePosition(); }
+    function moveDown() { y += 20; updatePosition(); }
+    
+    function updatePosition() {
+      spiderman.style.left = x + 'px';
+      spiderman.style.top = y + 'px';
+    }
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'ArrowRight') moveRight();
+      if (event.key === 'ArrowLeft') moveLeft();
+      if (event.key === 'ArrowUp') moveUp();
+      if (event.key === 'ArrowDown') moveDown();
+    });
   </script>
 </body>
 </html>
-
