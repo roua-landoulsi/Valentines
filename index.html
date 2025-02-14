@@ -14,6 +14,30 @@
         height: 100vh;
         overflow: hidden;
       }
+      .gift-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 20px;
+        flex-direction: column;
+        z-index: 100;
+      }
+      .gift-content button {
+        padding: 10px 20px;
+        font-size: 18px;
+        background-color: #ff4c4c;
+        border: none;
+        border-radius: 20px;
+        color: white;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
@@ -35,6 +59,21 @@
         document.getElementById('backgroundMusic').play().catch(() => console.log('Music autoplay blocked'));
         showHearts();
         createTimer();
+        setTimeout(showGiftLetter, 60000);
+      }
+
+      function showGiftLetter() {
+        const overlay = document.createElement('div');
+        overlay.className = 'gift-overlay';
+        overlay.innerHTML = `
+          <div class="gift-content">
+            <h2>💌 A Special Letter 💌</h2>
+            <p>N7ebek Mahdi,</p>
+            <p>You are my superhero. Happy Valentine's Day baby! 💖</p>
+            <button onclick="overlay.remove()">Close</button>
+          </div>
+        `;
+        document.body.appendChild(overlay);
       }
 
       let score = 0;
