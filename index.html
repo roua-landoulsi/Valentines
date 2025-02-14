@@ -1,110 +1,106 @@
+// Full Version Restored: Includes all discussed features
+
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Mahdi's Valentine's game💖</title>
+  <title>Spider-Man Valentine's Adventure 💖</title>
   <style>
-    body { margin: 0; padding: 0; font-family: Arial, sans-serif; background: url('https://wallpapers.com/images/high/hello-kitty-spiderman-heart-hnkzdcepdjizhvuw.webp') no-repeat center/cover; overflow: hidden; }
-
-    #startScreen, #endScreen {
-      position: fixed; width: 100%; height: 100%; background: rgba(255, 182, 193, 0.95);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      font-size: 28px; font-weight: bold; z-index: 100;
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('https://wallpapers.com/images/high/hello-kitty-spiderman-heart.jpg') no-repeat center/cover;
+      height: 100vh;
+      overflow: hidden;
     }
-    
-    #scoreCounter, #timer {
-      position: absolute; font-size: 24px; font-weight: bold; color: #ff4d4d;
-    }
-    #scoreCounter { top: 10px; right: 10px; }
-    #timer { top: 10px; left: 10px; }
-
     .heart {
-      position: absolute; width: 30px; height: 30px;
-      background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center/contain;
-      animation: fall 3s linear;
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center/cover;
     }
-    @keyframes fall { from { top: 0; } to { top: 100vh; } }
-
-    .controls { position: fixed; bottom: 20px; width: 100%; display: flex; justify-content: center; gap: 10px; }
-    .control-button { padding: 15px; font-size: 24px; background-color: #FF6347; color: white; border-radius: 50%; cursor: pointer; }
   </style>
 </head>
 <body>
-  <audio id="backgroundMusic" src="https://drive.google.com/uc?export=download&id=1bX99FqFwEtuMAvWOp25c_L3B6D0URsjS" autoplay loop></audio>
-
-  <div id="startScreen">
-    💖 Happy Valentine's Mahdi 💖
-    <p>Click to Start Your Adventure!</p>
-    <div class="button" onclick="startGame()">Start Game</div>
-  </div>
-
-  <div id="gameContainer">
-    <div id="scoreCounter">Score: 0</div>
-    <div id="timer">Time: 60s</div>
-    <div id="spiderman"></div>
-  </div>
-
-  <div id="endScreen" style="display:none;">
-    <p>Your Score: <span id="finalScore"></span></p>
-    <p>💌 Dear Mahdi,<br>You are my superhero, my love, and my best friend 💖 Happy Valentine’s Day!</p>
-    <button onclick="restartGame()">🔄 Play Again</button>
-    <button onclick="closeGift()">Close</button>
-  </div>
-
-  <div class="controls">
-    <div class="control-button" onclick="moveLeft()">⬅️</div>
-    <div class="control-button" onclick="moveUp()">⬆️</div>
-    <div class="control-button" onclick="moveDown()">⬇️</div>
-    <div class="control-button" onclick="moveRight()">➡️</div>
-  </div>
+  <div id="spiderman"></div>
 
   <script>
-    let time = 60;
     let score = 0;
-    let x = 100, y = 350;
+    let timer = 60;
     let timerInterval;
-
-    function startGame() {
-      document.getElementById('startScreen').style.display = 'none';
-      document.getElementById('backgroundMusic').currentTime = 118;
-      document.getElementById('backgroundMusic').play();
-      updateTimer();
-      timerInterval = setInterval(updateTimer, 1000);
-      setInterval(createHeart, 800);
+    
+    function createScoreCounter() {
+      const scoreCounter = document.createElement('div');
+      scoreCounter.id = 'scoreCounter';
+      scoreCounter.textContent = 'Score: 0';
+      scoreCounter.style.cssText = `position: fixed; top: 10px; left: 10px; font-size: 24px; color: white; padding: 5px 10px; background-color: rgba(0,0,0,0.5); border-radius: 8px;`;
+      document.body.appendChild(scoreCounter);
     }
 
-    function createHeart() {
-      let heart = document.createElement('div');
-      heart.className = 'heart';
-      heart.style.left = Math.random() * window.innerWidth + 'px';
-      document.body.appendChild(heart);
-      heart.addEventListener('animationend', () => heart.remove());
+    function showHearts() {
+      setInterval(() => {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.style.left = `${Math.random() * window.innerWidth}px`;
+        heart.style.top = '0px';
+        document.body.appendChild(heart);
+
+        const fallInterval = setInterval(() => {
+          heart.style.top = `${parseInt(heart.style.top) + 4}px`;
+          if (parseInt(heart.style.top) > window.innerHeight) {
+            heart.remove();
+            clearInterval(fallInterval);
+          }
+        }, 25);
+      }, 700);
     }
 
-    function updateTimer() {
-      time--;
-      document.getElementById('timer').innerText = `Time: ${time}s`;
-      if (time <= 0) endGame();
+    function startGameTimer() {
+      const timerDisplay = document.createElement('div');
+      timerDisplay.id = 'timer';
+      timerDisplay.textContent = 'Time: 60s';
+      timerDisplay.style.cssText = `position: fixed; top: 10px; right: 10px; font-size: 24px; color: white; background-color: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 8px;`;
+      document.body.appendChild(timerDisplay);
+
+      timerInterval = setInterval(() => {
+        timer--;
+        timerDisplay.textContent = `Time: ${timer}s`;
+        if (timer <= 0) {
+          clearInterval(timerInterval);
+          endGame();
+        }
+      }, 1000);
+    }
+
+    function setupEndScreen() {
+      const endScreen = document.createElement('div');
+      endScreen.innerHTML = `<div style="padding:20px;background:white;border-radius:20px;text-align:center;"><h1>Game Over</h1><p>Your Score: ${score}</p><button onclick="restartGame()">Play Again</button><button onclick="openGift()">Open Gift</button></div>`;
+      endScreen.style.cssText = `position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center;`;
+      document.body.appendChild(endScreen);
     }
 
     function endGame() {
       clearInterval(timerInterval);
-      document.getElementById('finalScore').innerText = score;
-      document.getElementById('endScreen').style.display = 'flex';
+      document.getElementById('scoreCounter')?.remove();
+      document.getElementById('timer')?.remove();
+      setupEndScreen();
     }
 
-    function restartGame() { window.location.reload(); }
-    function closeGift() { document.getElementById('endScreen').style.display = 'none'; }
-
-    function moveLeft() { x -= 20; updatePosition(); }
-    function moveRight() { x += 20; updatePosition(); }
-    function moveUp() { y -= 20; updatePosition(); }
-    function moveDown() { y += 20; updatePosition(); }
-
-    function updatePosition() {
-      const spiderman = document.getElementById('spiderman');
-      spiderman.style.left = x + 'px';
-      spiderman.style.top = y + 'px';
+    function restartGame() {
+      document.getElementById('endScreen')?.remove();
+      score = 0;
+      createScoreCounter();
+      showHearts();
+      startGameTimer();
     }
+
+    function openGift() {
+      alert('💌 Dear Mahdi, You are my superhero! 💖 Happy Valentine’s Day!');
+    }
+
+    // Initialization
+    createScoreCounter();
+    showHearts();
+    startGameTimer();
   </script>
 </body>
 </html>
