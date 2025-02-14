@@ -12,17 +12,13 @@
     }
 
     .button { background-color: #ff4d4d; color: white; padding: 10px 20px; font-size: 18px; border-radius: 10px; cursor: pointer; }
-
-    #gameContainer { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
     #scoreCounter { position: absolute; top: 10px; right: 10px; font-size: 24px; color: #ff4d4d; font-weight: bold; }
     #timer { position: absolute; top: 10px; left: 10px; font-size: 24px; color: #ff4d4d; font-weight: bold; }
-    
-    #spiderman {
-      position: absolute; width: 80px; height: 100px;
-      background: url('https://pngimg.com/uploads/spider_man/spider_man_PNG63.png') no-repeat center/contain;
-      left: 100px; top: 350px; display: block;
-    }
+    #spiderman { position: absolute; width: 80px; height: 100px; background: url('https://pngimg.com/uploads/spider_man/spider_man_PNG63.png') no-repeat center/contain; left: 100px; top: 350px; display: block; }
 
+    .heart { position: absolute; width: 30px; height: 30px; background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center/contain; animation: fall 4s linear; }
+    @keyframes fall { from { top: 0; } to { top: 100vh; } }
+    
     .controls { position: fixed; bottom: 20px; width: 100%; display: flex; justify-content: center; gap: 15px; }
     .control-button { padding: 20px; font-size: 20px; background-color: #4CAF50; color: white; border-radius: 50%; cursor: pointer; }
   </style>
@@ -47,18 +43,40 @@
   </div>
 
   <script>
-    let spiderman = document.getElementById('spiderman');
-    let x = 100, y = 350, speed = 20;
+    let x = 100, y = 350, score = 0, time = 60;
+    let timerInterval, heartInterval;
+    const spiderman = document.getElementById('spiderman');
 
     function startGame() {
       document.getElementById('startScreen').style.display = 'none';
+      updateTimer();
+      timerInterval = setInterval(updateTimer, 1000);
+      heartInterval = setInterval(createHeart, 1000);
     }
 
-    function moveLeft() { x -= speed; updatePosition(); }
-    function moveRight() { x += speed; updatePosition(); }
-    function moveUp() { y -= speed; updatePosition(); }
-    function moveDown() { y += speed; updatePosition(); }
+    function updateTimer() {
+      time--;
+      document.getElementById('timer').innerText = `Time: ${time}s`;
+      if (time <= 0) {
+        clearInterval(timerInterval);
+        clearInterval(heartInterval);
+        alert(`Time's up! Your score: ${score}`);
+      }
+    }
 
+    function createHeart() {
+      let heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.style.left = Math.random() * window.innerWidth + 'px';
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 4000);
+    }
+
+    function moveLeft() { x -= 20; updatePosition(); }
+    function moveRight() { x += 20; updatePosition(); }
+    function moveUp() { y -= 20; updatePosition(); }
+    function moveDown() { y += 20; updatePosition(); }
+    
     function updatePosition() {
       spiderman.style.left = x + 'px';
       spiderman.style.top = y + 'px';
@@ -73,3 +91,4 @@
   </script>
 </body>
 </html>
+
