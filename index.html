@@ -4,39 +4,94 @@
   <title>Spider-Man Valentine's Adventure 💖</title>
   <style>
     body { margin: 0; padding: 0; font-family: Arial, sans-serif; background: url('https://wallpapers.com/images/high/hello-kitty-spiderman-heart-hnkzdcepdjizhvuw.webp') no-repeat center/cover; }
-    #startScreen { 
+    #startScreen, #endScreen { 
       position: fixed; width: 100%; height: 100%; background: rgba(255, 182, 193, 0.95);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       font-size: 32px; font-weight: bold; color: #d10000; text-align: center;
-      z-index: 100; border-radius: 20px; padding: 20px;
-      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+      border-radius: 20px; padding: 20px; box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
     }
-    .start-button {
+    .start-button, .restart-button {
       background-color: #d10000; color: white; font-size: 24px; font-weight: bold;
-      padding: 15px 40px; border-radius: 50px; cursor: pointer;
-      border: none; transition: 0.3s; margin-top: 20px;
+      padding: 15px 40px; border-radius: 50px; cursor: pointer; transition: 0.3s;
     }
-    .start-button:hover { background-color: #b30000; }
+    .start-button:hover, .restart-button:hover { background-color: #b30000; }
+    #scoreCounter, #timer { position: absolute; font-size: 24px; font-weight: bold; color: #ff4d4d; }
+    #scoreCounter { top: 10px; right: 10px; }
+    #timer { top: 10px; left: 10px; }
+    .heart { position: absolute; width: 20px; height: 20px; background-color: red; border-radius: 50%; }
   </style>
 </head>
 <body>
-  <div id="startScreen">
-    💖 Happy Valentine's Mahdi !! 💖
-    <p style="font-size: 18px; color: #444;">Click to Start Your Adventure!</p>
-    <button class="start-button" onclick="startGame()">Start Game</button>
+  <div id="startScreen">💖 Happy Valentine's Mahdi !! 💖<p style="font-size: 18px;">Click to Start Your Adventure!</p><button class="start-button" onclick="startGame()">Start Game</button></div>
+  
+  <div id="endScreen" style="display:none;">
+    <p>Your Score: <span id="finalScore"></span></p>
+    <button class="restart-button" onclick="location.reload()">🔄 Play Again</button>
   </div>
+
   <div id="gameContainer" style="display:none;">
     <div id="scoreCounter">Score: 0</div>
     <div id="timer">Time: 60s</div>
-    <div id="spiderman"></div>
+    <div id="spiderman" style="position:absolute;width:80px;height:100px;background:url('https://pngimg.com/uploads/spider_man/spider_man_PNG63.png') no-repeat center/contain;left:100px;top:350px;"></div>
   </div>
+  
   <script>
+    let time = 60, score = 0, x = 100, y = 350;
+
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.style.left = `${Math.random() * window.innerWidth}px`;
+      heart.style.top = '0px';
+      document.body.appendChild(heart);
+
+      const fallInterval = setInterval(() => {
+        heart.style.top = `${parseInt(heart.style.top) + 5}px`;
+        if (parseInt(heart.style.top) > window.innerHeight) {
+          heart.remove();
+          clearInterval(fallInterval);
+        }
+        if (Math.abs(x - parseInt(heart.style.left)) < 30 && Math.abs(y - parseInt(heart.style.top)) < 30) {
+          score++;
+          document.getElementById('scoreCounter').innerText = `Score: ${score}`;
+          heart.remove();
+          clearInterval(fallInterval);
+        }
+      }, 30);
+    }
+
+    function updateTimer() {
+      document.getElementById('timer').innerText = `Time: ${time}s`;
+      if (time <= 0) endGame();
+      time--;
+    }
+
+    function endGame() {
+      document.getElementById('gameContainer').style.display = 'none';
+      document.getElementById('endScreen').style.display = 'flex';
+      document.getElementById('finalScore').innerText = score;
+    }
+
+    function moveSpiderMan(dx, dy) {
+      x += dx;
+      y += dy;
+      const spiderman = document.getElementById('spiderman');
+      spiderman.style.left = `${x}px`;
+      spiderman.style.top = `${y}px`;
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') moveSpiderMan(-20, 0);
+      if (e.key === 'ArrowRight') moveSpiderMan(20, 0);
+      if (e.key === 'ArrowUp') moveSpiderMan(0, -20);
+      if (e.key === 'ArrowDown') moveSpiderMan(0, 20);
+    });
+
     function startGame() {
       document.getElementById('startScreen').style.display = 'none';
       document.getElementById('gameContainer').style.display = 'block';
-      timerInterval = setInterval(updateTimer, 1000);
+      setInterval(updateTimer, 1000);
       setInterval(createHeart, 800);
-      gameLoop();
     }
   </script>
 </body>
