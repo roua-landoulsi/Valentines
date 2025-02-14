@@ -4,66 +4,102 @@
   <title>Spider-Man Valentine's Adventure 💖</title>
   <style>
     body { margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #87CEEB; }
+
+    #startScreen {
+      position: fixed; width: 100%; height: 100%; background: rgba(255, 182, 193, 0.95);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: bold; z-index: 100;
+    }
+
+    .button { background-color: #ff4d4d; color: white; font-size: 24px; padding: 10px 30px;
+              border-radius: 10px; cursor: pointer; }
+
     #gameContainer { position: relative; width: 100vw; height: 100vh; background: #f0f8ff; overflow: hidden; }
-    
+
+    #scoreCounter {
+      position: absolute; top: 10px; right: 10px; font-size: 24px; color: #ff4d4d; font-weight: bold;
+    }
+
     #spiderman {
       position: absolute; width: 80px; height: 100px;
       background: url('https://pngimg.com/uploads/spider_man/spider_man_PNG63.png') no-repeat center/contain;
-      left: 50px; top: 350px; display: block;
+      left: 50px; top: 350px; display: none;
     }
-    
+
     #helloKitty {
       position: absolute; width: 80px; height: 100px;
       background: url('https://upload.wikimedia.org/wikipedia/commons/3/3e/Hello_Kitty.svg') no-repeat center/contain;
       left: 750px; bottom: 150px; display: none;
     }
-    
+
     .heart {
-      position: absolute; width: 30px; height: 30px; background-color: pink;
-      border-radius: 50%; animation: fall 5s linear infinite;
+      position: absolute; width: 30px; height: 30px;
+      background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center/contain;
+      background-size: cover; animation: fall 5s linear infinite;
     }
 
     @keyframes fall {
       from { top: 0; }
       to { top: 100vh; }
     }
-
-    #winMessage {
-      display: none; position: fixed; top: 40%; left: 50%; transform: translate(-50%, -50%);
-      font-size: 36px; color: green; font-weight: bold;
-    }
   </style>
 </head>
 <body>
+  <div id="startScreen">
+    💖 Welcome to Spider-Man Valentine's Adventure 💖
+    <div class="button" onclick="startGame()">Start Game</div>
+  </div>
+
   <div id="gameContainer">
+    <div id="scoreCounter">Score: 0</div>
     <div id="spiderman"></div>
     <div id="helloKitty"></div>
-    <div id="winMessage">🎉 You Win! Spider-Man meets Hello Kitty! 💖</div>
   </div>
 
   <script>
     let spiderman = document.getElementById('spiderman');
+    let scoreCounter = document.getElementById('scoreCounter');
     let helloKitty = document.getElementById('helloKitty');
-    let winMessage = document.getElementById('winMessage');
-    let x = 50, y = 350, speed = 20;
-    let score = 0;
+    let x = 50, y = 350, speed = 20, score = 0;
+
+    function startGame() {
+      document.getElementById('startScreen').style.display = 'none';
+      spiderman.style.display = 'block';
+    }
 
     function createHeart() {
       let heart = document.createElement('div');
       heart.className = 'heart';
       heart.style.left = Math.random() * window.innerWidth + 'px';
+      heart.style.top = '-30px';
       document.body.appendChild(heart);
-      setTimeout(() => { heart.remove(); }, 5000);
+
+      let fallInterval = setInterval(() => {
+        let heartTop = parseInt(heart.style.top) || 0;
+        heart.style.top = (heartTop + 5) + 'px';
+
+        let spidermanRect = spiderman.getBoundingClientRect();
+        let heartRect = heart.getBoundingClientRect();
+
+        if (
+          heartRect.bottom >= spidermanRect.top &&
+          heartRect.top <= spidermanRect.bottom &&
+          heartRect.left <= spidermanRect.right &&
+          heartRect.right >= spidermanRect.left
+        ) {
+          score++;
+          scoreCounter.innerText = `Score: ${score}`;
+          heart.remove();
+          clearInterval(fallInterval);
+        }
+        if (heartTop > window.innerHeight) {
+          heart.remove();
+          clearInterval(fallInterval);
+        }
+      }, 20);
     }
 
     setInterval(createHeart, 1000);
-
-    function checkWin() {
-      if (x > 700 && score >= 5) {
-        helloKitty.style.display = 'block';
-        winMessage.style.display = 'block';
-      }
-    }
 
     document.addEventListener('keydown', function(event) {
       if (event.key === 'ArrowRight') x += speed;
@@ -73,7 +109,6 @@
 
       spiderman.style.left = x + 'px';
       spiderman.style.top = y + 'px';
-      checkWin();
     });
   </script>
 </body>
