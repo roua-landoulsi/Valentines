@@ -1,60 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Valentine's Game for Mahdi 💖</title>
+  <title>Spider-Man Valentine's Adventure 💖</title>
   <style>
     body { margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #87CEEB; }
-
-    #startScreen {
-      position: fixed; width: 100%; height: 100%; background: rgba(255, 182, 193, 0.95);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      font-size: 24px; font-weight: bold; z-index: 100;
-    }
-
-    .button { background-color: #ff4d4d; color: white; font-size: 24px; padding: 10px 30px;
-              border-radius: 10px; cursor: pointer; }
-
-    #gameContainer {
-      position: relative; width: 100vw; height: 100vh;
-      background: url('https://wallpapers.com/images/high/hello-kitty-spiderman-heart-hnkzdcepdjizhvuw.webp') no-repeat center/cover;
-      overflow: hidden;
-    }
-
+    #gameContainer { position: relative; width: 100vw; height: 100vh; background: #f0f8ff; overflow: hidden; }
+    
     #spiderman {
       position: absolute; width: 80px; height: 100px;
       background: url('https://pngimg.com/uploads/spider_man/spider_man_PNG63.png') no-repeat center/contain;
-      background-size: cover;
-      left: 100px; top: 350px; display: none;
+      left: 50px; top: 350px; display: block;
     }
-
+    
     #helloKitty {
       position: absolute; width: 80px; height: 100px;
       background: url('https://upload.wikimedia.org/wikipedia/commons/3/3e/Hello_Kitty.svg') no-repeat center/contain;
-      background-size: cover;
-      left: 600px; bottom: 150px; display: none;
+      left: 750px; bottom: 150px; display: none;
+    }
+    
+    .obstacle {
+      position: absolute; width: 50px; height: 50px; background-color: red;
+      animation: moveObstacle 4s linear infinite;
+    }
+
+    @keyframes moveObstacle {
+      from { left: 100%; }
+      to { left: -50px; }
+    }
+
+    #winMessage {
+      display: none; position: fixed; top: 40%; left: 50%; transform: translate(-50%, -50%);
+      font-size: 36px; color: green; font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <div id="startScreen">
-    💖 Welcome to Spider-Man Valentine's Adventure 💖
-    <div class="button" onclick="startGame()">Start Game</div>
-  </div>
-
   <div id="gameContainer">
     <div id="spiderman"></div>
     <div id="helloKitty"></div>
+    <div id="winMessage">🎉 You Win! Spider-Man meets Hello Kitty! 💖</div>
   </div>
 
   <script>
     let spiderman = document.getElementById('spiderman');
     let helloKitty = document.getElementById('helloKitty');
-    let x = 100, y = 350, speed = 20;
+    let winMessage = document.getElementById('winMessage');
+    let x = 50, y = 350, speed = 20;
 
-    function startGame() {
-      document.getElementById('startScreen').style.display = 'none';
-      spiderman.style.display = 'block';
-      helloKitty.style.display = 'block';
+    function checkWin() {
+      if (x > 700) {
+        helloKitty.style.display = 'block';
+        winMessage.style.display = 'block';
+      }
     }
 
     document.addEventListener('keydown', function(event) {
@@ -65,6 +62,7 @@
 
       spiderman.style.left = x + 'px';
       spiderman.style.top = y + 'px';
+      checkWin();
     });
   </script>
 </body>
