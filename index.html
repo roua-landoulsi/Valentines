@@ -20,21 +20,11 @@
     #spiderman {
       position: absolute; width: 80px; height: 100px;
       background: url('https://pngimg.com/uploads/spider_man/spider_man_PNG63.png') no-repeat center/contain;
-      left: 100px; top: 350px; display: none;
+      left: 100px; top: 350px; display: block;
     }
 
-    .heart {
-      position: absolute; width: 30px; height: 30px;
-      background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center/contain;
-      animation: fall 5s linear infinite;
-    }
-
-    @keyframes fall { from { top: 0; } to { top: 100vh; } }
-    
-    #endScreen {
-      display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      text-align: center; font-size: 28px; color: green;
-    }
+    .controls { position: fixed; bottom: 20px; width: 100%; display: flex; justify-content: center; gap: 15px; }
+    .control-button { padding: 20px; font-size: 20px; background-color: #4CAF50; color: white; border-radius: 50%; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -49,52 +39,37 @@
     <div id="spiderman"></div>
   </div>
 
-  <div id="endScreen">
-    <p>Your Score: <span id="finalScore"></span></p>
-    <div class="button" onclick="openGift()">🎁 Open Gift Box for Secret Letter</div>
-    <div class="button" onclick="restartGame()">🔄 Play Again</div>
+  <div class="controls">
+    <div class="control-button" onclick="moveLeft()">⬅️</div>
+    <div class="control-button" onclick="moveUp()">⬆️</div>
+    <div class="control-button" onclick="moveDown()">⬇️</div>
+    <div class="control-button" onclick="moveRight()">➡️</div>
   </div>
 
   <script>
     let spiderman = document.getElementById('spiderman');
-    let scoreCounter = document.getElementById('scoreCounter');
-    let timerElement = document.getElementById('timer');
-    let score = 0;
-    let time = 60;
+    let x = 100, y = 350, speed = 20;
 
     function startGame() {
       document.getElementById('startScreen').style.display = 'none';
-      spiderman.style.display = 'block';
-      setInterval(createHeart, 1000);
-      setInterval(updateTimer, 1000);
     }
 
-    function createHeart() {
-      let heart = document.createElement('div');
-      heart.className = 'heart';
-      heart.style.left = Math.random() * window.innerWidth + 'px';
-      document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 5000);
+    function moveLeft() { x -= speed; updatePosition(); }
+    function moveRight() { x += speed; updatePosition(); }
+    function moveUp() { y -= speed; updatePosition(); }
+    function moveDown() { y += speed; updatePosition(); }
+
+    function updatePosition() {
+      spiderman.style.left = x + 'px';
+      spiderman.style.top = y + 'px';
     }
 
-    function updateTimer() {
-      time--;
-      timerElement.innerText = `Time: ${time}s`;
-      if (time <= 0) endGame();
-    }
-
-    function endGame() {
-      document.getElementById('finalScore').innerText = score;
-      document.getElementById('endScreen').style.display = 'block';
-    }
-
-    function openGift() {
-      alert("💌 Secret Letter: Happy Valentine's Day, Mahdi! 💖 From Rosie");
-    }
-
-    function restartGame() {
-      window.location.reload();
-    }
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'ArrowRight') moveRight();
+      if (event.key === 'ArrowLeft') moveLeft();
+      if (event.key === 'ArrowUp') moveUp();
+      if (event.key === 'ArrowDown') moveDown();
+    });
   </script>
 </body>
 </html>
