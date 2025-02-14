@@ -11,9 +11,13 @@
       font-size: 24px; font-weight: bold; z-index: 100;
     }
 
-    #timer {
-      position: absolute; top: 10px; left: 10px;
-      font-size: 24px; color: #ff4d4d; font-weight: bold;
+    #scoreCounter { position: absolute; top: 10px; right: 10px; font-size: 24px; color: #ff4d4d; font-weight: bold; }
+    #timer { position: absolute; top: 10px; left: 10px; font-size: 24px; color: #ff4d4d; font-weight: bold; }
+    
+    #spiderman {
+      position: absolute; width: 80px; height: 100px;
+      background: url('https://pngimg.com/uploads/spider_man/spider_man_PNG63.png') no-repeat center/contain;
+      left: 100px; top: 350px; display: block;
     }
   </style>
 </head>
@@ -32,7 +36,8 @@
   <script>
     let time = 60;
     let timerInterval;
-
+    let score = 0;
+    
     function startGame() {
       document.getElementById('startScreen').style.display = 'none';
       updateTimer();
