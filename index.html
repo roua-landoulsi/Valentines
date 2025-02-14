@@ -14,18 +14,15 @@
     #scoreCounter { position: absolute; top: 10px; right: 10px; font-size: 24px; color: #ff4d4d; font-weight: bold; }
     #timer { position: absolute; top: 10px; left: 10px; font-size: 24px; color: #ff4d4d; font-weight: bold; }
 
-    #spiderman {
-      position: absolute; width: 80px; height: 100px;
-      background: url('https://pngimg.com/uploads/spider_man/spider_man_PNG63.png') no-repeat center/contain;
-      left: 100px; top: 350px; display: block;
-    }
-
     .heart {
       position: absolute; width: 30px; height: 30px;
       background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center/contain;
       animation: fall 4s linear;
     }
     @keyframes fall { from { top: 0; } to { top: 100vh; } }
+
+    .controls { position: fixed; bottom: 20px; width: 100%; display: flex; justify-content: center; gap: 15px; }
+    .control-button { padding: 20px; font-size: 20px; background-color: #4CAF50; color: white; border-radius: 50%; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -38,7 +35,13 @@
   <div id="gameContainer">
     <div id="scoreCounter">Score: 0</div>
     <div id="timer">Time: 60s</div>
-    <div id="spiderman"></div>
+  </div>
+
+  <div class="controls">
+    <div class="control-button" onclick="moveLeft()">⬅️</div>
+    <div class="control-button" onclick="moveUp()">⬆️</div>
+    <div class="control-button" onclick="moveDown()">⬇️</div>
+    <div class="control-button" onclick="moveRight()">➡️</div>
   </div>
 
   <script>
@@ -68,7 +71,24 @@
       heart.className = 'heart';
       heart.style.left = Math.random() * window.innerWidth + 'px';
       document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 4000);
+      heart.addEventListener('animationiteration', () => heart.remove());
+      
+      let fallInterval = setInterval(() => {
+        let heartTop = parseInt(heart.style.top) || 0;
+        heart.style.top = (heartTop + 5) + 'px';
+        let spidermanRect = spiderman.getBoundingClientRect();
+        let heartRect = heart.getBoundingClientRect();
+
+        if (heartRect.bottom >= spidermanRect.top &&
+            heartRect.top <= spidermanRect.bottom &&
+            heartRect.left <= spidermanRect.right &&
+            heartRect.right >= spidermanRect.left) {
+          score++;
+          document.getElementById('scoreCounter').innerText = `Score: ${score}`;
+          heart.remove();
+          clearInterval(fallInterval);
+        }
+      }, 20);
     }
 
     function moveLeft() { x -= 20; updatePosition(); }
@@ -80,13 +100,6 @@
       spiderman.style.left = x + 'px';
       spiderman.style.top = y + 'px';
     }
-
-    document.addEventListener('keydown', function(event) {
-      if (event.key === 'ArrowRight') moveRight();
-      if (event.key === 'ArrowLeft') moveLeft();
-      if (event.key === 'ArrowUp') moveUp();
-      if (event.key === 'ArrowDown') moveDown();
-    });
   </script>
 </body>
 </html>
